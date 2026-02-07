@@ -1,0 +1,22 @@
+.features-page {
+  min-height: 100vh;
+  padding: 100px 60px;
+  background: linear-gradient(to bottom, #f1fff1, #e6ffe6);
+}
+
+.features-page h1 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 40px;
+}
+
+.feature-box {
+  background: white;
+  margin: 15px auto;
+  padding: 18px;
+  width: 65%;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
