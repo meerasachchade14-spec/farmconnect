@@ -1,13 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./landing.css";
 import crops from "../assests/crops.jpg";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0 }
+};
 
 const Landing = () => {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="navbar">
+      <motion.nav
+        className="navbar"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <h2 className="logo">🌿 FarmConnect</h2>
 
         <div className="nav-links">
@@ -20,83 +31,124 @@ const Landing = () => {
           <Link to="/login" className="btn">Login</Link>
           <Link to="/register" className="btn btn-outline">Register</Link>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* HERO */}
       <section className="hero" id="home">
-        <h1>Where Farms Meet the Future 🌾</h1>
-        <p>A smart digital marketplace for trusted agriculture</p>
+        <motion.h1
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.8 }}
+        >
+          Where Farms Meet the Future 🌾
+        </motion.h1>
+
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 1, delay: 0.3 }}
+        >
+          A smart digital marketplace for trusted agriculture
+        </motion.p>
       </section>
 
       {/* MAIN SECTION */}
       <section className="main-section">
 
         {/* LEFT */}
-        <div className="left-panel">
+        <motion.div
+          className="left-panel"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
           <div className="admin-preview">
             <h2>Admin Dashboard</h2>
             <p>Central control for the entire marketplace</p>
 
             <div className="admin-cards">
-              <div className="admin-card">
-                <h3>Farmers</h3>
-                <p>Verify & manage</p>
-              </div>
-              <div className="admin-card">
-                <h3>Products</h3>
-                <p>Price & stock</p>
-              </div>
-              <div className="admin-card">
-                <h3>Orders</h3>
-                <p>Track delivery</p>
-              </div>
+              {["Farmers", "Products", "Orders"].map((item, index) => (
+                <motion.div
+                  key={index}
+                  className="admin-card"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                >
+                  <h3>{item}</h3>
+                  <p>
+                    {item === "Farmers"
+                      ? "Verify & manage"
+                      : item === "Products"
+                      ? "Price & stock"
+                      : "Track delivery"}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
 
           {/* FEATURE PREVIEW */}
           <div className="features-preview">
-            <div className="feature-card">
-              <span>🌱</span>
-              <h4>Farmers First</h4>
-              <p>Fair pricing & direct access</p>
-            </div>
-
-            <div className="feature-card">
-              <span>🥬</span>
-              <h4>Fresh Produce</h4>
-              <p>Quality checked by admin</p>
-            </div>
-
-            <div className="feature-card">
-              <span>⭐</span>
-              <h4>Rated Quality</h4>
-              <p>Trusted reviews</p>
-            </div>
-
-            <div className="feature-card">
-              <span>🚚</span>
-              <h4>Order Tracking</h4>
-              <p>Live delivery updates</p>
-            </div>
+            {[
+              { icon: "🌱", title: "Farmers First", desc: "Fair pricing & direct access" },
+              { icon: "🥬", title: "Fresh Produce", desc: "Quality checked by admin" },
+              { icon: "⭐", title: "Rated Quality", desc: "Trusted reviews" },
+              { icon: "🚚", title: "Order Tracking", desc: "Live delivery updates" }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                className="feature-card"
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <span>{feature.icon}</span>
+                <h4>{feature.title}</h4>
+                <p>{feature.desc}</p>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* RIGHT */}
-        <div className="image-section">
-          <img src={crops} alt="Smart Farming" />
-          <Link to="/register" className="get-started">
-            Get Started →
-          </Link>
-        </div>
+        <motion.div
+          className="image-section"
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <motion.img
+            src={crops}
+            alt="Smart Farming"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.3 }}
+          />
+
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Link to="/register" className="get-started">
+              Get Started →
+            </Link>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* CONTACT */}
-      <section className="contact" id="contact">
+      <motion.section
+        className="contact"
+        id="contact"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
         <h2>Contact Us</h2>
         <p>📧 farmconnect@gmail.com</p>
         <p>📞 +91 79840 59194</p>
         <p>📍 India</p>
-      </section>
+      </motion.section>
     </>
   );
 };

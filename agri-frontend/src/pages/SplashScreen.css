@@ -1,0 +1,35 @@
+.splash-container {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #0f9d58, #3bb78f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+.logo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+.logo-box h1 {
+  font-size: 2.8rem;
+  margin: 10px 0 5px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.logo-box p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}

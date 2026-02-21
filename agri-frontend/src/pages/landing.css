@@ -10,31 +10,55 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  background: #f9fbf9;
+  color: #222;
+}
+
 /* NAVBAR */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem 3rem;
   background: #4caf50;
   color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .nav-links a {
-  margin: 0 0.8rem;
+  margin: 0 1rem;
   color: white;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.8;
 }
 
 .nav-buttons .btn {
   margin-left: 1rem;
-  padding: 0.45rem 1rem;
-  border-radius: 20px;
+  padding: 0.5rem 1.2rem;
+  border-radius: 25px;
   background: white;
   color: #4caf50;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.nav-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .btn-outline {
@@ -43,18 +67,35 @@ html {
   color: white;
 }
 
+.btn-outline:hover {
+  background: white;
+  color: #4caf50;
+}
+
 /* HERO */
 .hero {
   text-align: center;
-  padding: 2.5rem 1rem;
+  padding: 4rem 1rem;
   background: linear-gradient(to bottom, #a8e6cf, #dcedc1);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.hero p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #2e7d32;
 }
 
 /* MAIN */
 .main-section {
   display: flex;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 3rem;
+  padding: 3rem;
+  align-items: flex-start;
 }
 
 /* LEFT */
@@ -65,23 +106,33 @@ html {
 /* ADMIN */
 .admin-preview {
   background: #e8f5e9;
-  padding: 1.5rem;
-  border-radius: 20px;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.admin-preview h2 {
+  margin-bottom: 0.5rem;
 }
 
 .admin-cards {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .admin-card {
   background: linear-gradient(135deg, #66bb6a, #81c784);
   color: white;
   padding: 1rem;
-  border-radius: 16px;
+  border-radius: 18px;
   width: 120px;
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-5px);
 }
 
 /* FEATURE PREVIEW */
@@ -89,29 +140,35 @@ html {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 1.2rem;
+  margin-top: 2rem;
 }
 
 .feature-card {
   width: 48%;
   background: #ffffff;
-  padding: 1rem;
-  border-radius: 16px;
+  padding: 1.2rem;
+  border-radius: 18px;
   text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .feature-card span {
-  font-size: 26px;
+  font-size: 28px;
 }
 
 .feature-card h4 {
-  margin: 0.4rem 0;
+  margin: 0.6rem 0;
   color: #2e7d32;
 }
 
 .feature-card p {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #555;
 }
 
@@ -125,24 +182,75 @@ html {
 
 .image-section img {
   width: 100%;
-  height: 320px;
+  height: 350px;
   object-fit: cover;
-  border-radius: 24px;
+  border-radius: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.image-section img:hover {
+  transform: scale(1.02);
 }
 
 .get-started {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   background: #4caf50;
   color: white;
-  padding: 0.6rem 1.6rem;
-  border-radius: 24px;
+  padding: 0.7rem 1.8rem;
+  border-radius: 30px;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.get-started:hover {
+  background: #388e3c;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* CONTACT */
 .contact {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 4rem 1rem;
   background: #f1f8e9;
+}
+
+.contact h2 {
+  margin-bottom: 1rem;
+}
+
+.contact p {
+  margin: 0.3rem 0;
+  color: #444;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .main-section {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .image-section {
+    width: 100%;
+  }
+
+  .feature-card {
+    width: 100%;
+  }
+}
+/* SPLASH SCREEN */
+.splash {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
