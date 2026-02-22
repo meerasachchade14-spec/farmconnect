@@ -1,26 +1,42 @@
 import React from "react";
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
+import "./farmer.css";
 
 const FarmerDashboard = () => {
   return (
-    <div>
-      <h2>Farmer Dashboard 🌾</h2>
+    <div className="dashboard-container">
+      <Sidebar />
 
-      <div style={{ display: "flex", gap: "20px" }}>
-        <div style={styles.card}>Total Products: 12</div>
-        <div style={styles.card}>Orders: 8</div>
-        <div style={styles.card}>Earnings: ₹4500</div>
+      <div className="main-content">
+        <Navbar />
+
+        <div className="stats">
+          <div className="card">
+            <h3>Total Products</h3>
+            <p>12</p>
+          </div>
+
+          <div className="card">
+            <h3>Total Orders</h3>
+            <p>8</p>
+          </div>
+
+          <div className="card">
+            <h3>Total Earnings</h3>
+            <p>₹ 12,500</p>
+          </div>
+        </div>
+
+        <div className="welcome-box">
+          <h2>Welcome to FarmConnect Portal 🌾</h2>
+          <p>
+            Manage your products, track orders and monitor earnings from one place.
+          </p>
+        </div>
       </div>
     </div>
   );
-};
-
-const styles = {
-  card: {
-    background: "#e8f5e9",
-    padding: "20px",
-    borderRadius: "10px",
-    fontWeight: "bold",
-  },
 };
 
 export default FarmerDashboard;
