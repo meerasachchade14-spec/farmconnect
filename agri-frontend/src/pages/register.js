@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../auth.css";
 
 const Register = () => {
+  const navigate = useNavigate();   // ✅ ADD THIS
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -49,16 +52,15 @@ const Register = () => {
       setError("");
       setSuccess("Registration successful 🌱");
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        role: "",
-        password: "",
-        confirmPassword: "",
-      });
-
       console.log(res.data);
+
+      // ✅ REDIRECT LOGIC
+      if (role === "farmer") {
+        navigate("/farmer-dashboard");
+      } else if (role === "buyer") {
+        navigate("/");  // ya buyer dashboard ka route
+      }
+
     } catch (err) {
       setSuccess("");
       setError(err.response?.data?.error || "Server error");

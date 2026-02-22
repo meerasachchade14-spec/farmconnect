@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../auth.css";
 
 const Login = () => {
+  const navigate = useNavigate();   // ✅ ADD THIS
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
@@ -29,9 +32,18 @@ const Login = () => {
       }
 
       setError("");
-      alert(`Login successful ✅ (${res.data.role})`);
+
+      // ✅ ROLE BASED REDIRECT
+      if (res.data.role === "farmer") {
+        navigate("/farmer-dashboard");
+      } else if (res.data.role === "buyer") {
+        navigate("/");  // buyer dashboard route agar ho to change kar dena
+      } else if (res.data.role === "admin") {
+        navigate("/");  // admin dashboard route agar ho to change kar dena
+      }
 
       console.log(res.data);
+
     } catch (err) {
       setError(err.response?.data?.error || "Invalid credentials");
     }
