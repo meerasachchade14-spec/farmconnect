@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../auth.css";
 
 const Login = () => {
-  const navigate = useNavigate();   // ✅ ADD THIS
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,24 +25,22 @@ const Login = () => {
         { email, password }
       );
 
-      // role backend se aa raha hai
-      if (res.data.role !== role) {
+      const backendRole = res.data.role;
+
+      if (backendRole !== role) {
         setError("Role mismatch");
         return;
       }
 
-      setError("");
-
-      // ✅ ROLE BASED REDIRECT
-      if (res.data.role === "farmer") {
-        navigate("/farmer-dashboard");
-      } else if (res.data.role === "buyer") {
-        navigate("/");  // buyer dashboard route agar ho to change kar dena
-      } else if (res.data.role === "admin") {
-        navigate("/");  // admin dashboard route agar ho to change kar dena
+      // Optional: token save
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
       }
 
-      console.log(res.data);
+      setError("");
+
+      // 🔥 Dynamic Redirect
+      navigate(`/${backendRole}-dashboard`);
 
     } catch (err) {
       setError(err.response?.data?.error || "Invalid credentials");
@@ -73,10 +71,9 @@ const Login = () => {
           />
 
           <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="">Select Role</option>
+            <option value="">Login As</option>
             <option value="farmer">Farmer</option>
             <option value="buyer">Buyer</option>
-            <option value="admin">Admin</option>
           </select>
 
           <button type="submit">Login</button>
