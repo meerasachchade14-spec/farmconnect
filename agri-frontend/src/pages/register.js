@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../auth.css";
 
 const Register = () => {
-  const navigate = useNavigate();   // ✅ ADD THIS
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -49,17 +49,15 @@ const Register = () => {
         }
       );
 
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
       setError("");
       setSuccess("Registration successful 🌱");
 
-      console.log(res.data);
-
-      // ✅ REDIRECT LOGIC
-      if (role === "farmer") {
-        navigate("/farmer-dashboard");
-      } else if (role === "buyer") {
-        navigate("/");  // ya buyer dashboard ka route
-      }
+      // 🔥 Dynamic Redirect
+      navigate(`/${role}-dashboard`);
 
     } catch (err) {
       setSuccess("");
@@ -77,18 +75,52 @@ const Register = () => {
         {success && <p style={{ color: "green" }}>{success}</p>}
 
         <form onSubmit={handleSubmit}>
-          <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} />
-          <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
-          <input name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} />
+          <input
+            name="name"
+            placeholder="Full Name"
+            value={formData.name}
+            onChange={handleChange}
+          />
 
-          <select name="role" value={formData.role} onChange={handleChange}>
+          <input
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+
+          <input
+            name="phone"
+            placeholder="Phone"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+          >
             <option value="">Register As</option>
             <option value="farmer">Farmer</option>
             <option value="buyer">Buyer</option>
           </select>
 
-          <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
-          <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
 
           <button type="submit">Register</button>
         </form>
