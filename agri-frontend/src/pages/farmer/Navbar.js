@@ -1,12 +1,17 @@
 import React from "react";
+import "./farmer.css";
 
-const Navbar = () => {
+function Navbar() {
   return (
-    <div className="navbar">
-      <h3>Farmer Dashboard</h3>
-      <button className="logout-btn">Logout</button>
+    <div style={{ 
+      background:"#2e7d32", 
+      color:"white", 
+      padding:"10px 20px",
+      textAlign:"right"
+    }}>
+      Welcome Farmer 🌾
     </div>
   );
-};
+}
 
 export default Navbar;

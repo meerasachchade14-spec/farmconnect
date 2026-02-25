@@ -1,0 +1,18 @@
+.profile-container {
+  padding: 30px;
+  flex: 1;
+}
+
+.profile-container h2 {
+  margin-bottom: 20px;
+  color: #2e7d32;
+}
+
+.card {
+  background-color: #f1f8f4;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-weight: 500;
+}
