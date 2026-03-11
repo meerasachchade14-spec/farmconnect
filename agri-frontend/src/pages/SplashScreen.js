@@ -1,36 +1,38 @@
-import React, { useEffect } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import "./SplashScreen.css";
+import splashVideo from "../assests/farm-splash1.mp4";
 
-const SplashScreen = ({ onFinish }) => {
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (onFinish && typeof onFinish === "function") {
-        onFinish();
-      }
-    }, 2500);
-
-    return () => clearTimeout(timer);
-  }, [onFinish]);
-
+function SplashScreen() {
   return (
-    <motion.div
-      className="splash"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
-    >
-      <motion.h1
-        initial={{ scale: 0.6, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        🌿 FarmConnect
-      </motion.h1>
-    </motion.div>
+    <div className="splash">
+
+      <video
+        className="video-bg"
+        src={splashVideo}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+
+      <div className="overlay"></div>
+
+      <div className="center-card">
+
+        <div className="circle-loader"></div>
+
+        <h1 className="logo-text">🌿 FarmConnect</h1>
+
+        <p className="tag">Smart Agriculture Marketplace</p>
+
+      </div>
+
+      <div className="bottom-loader">
+        <div className="line"></div>
+      </div>
+
+    </div>
   );
-};
+}
 
 export default SplashScreen;

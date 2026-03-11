@@ -1,35 +1,106 @@
-.splash-container {
-  height: 100vh;
-  width: 100%;
-  background: linear-gradient(135deg, #0f9d58, #3bb78f);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgb(255, 255, 255);
-  text-align: center;
+.splash{
+height:100vh;
+width:100%;
+position:relative;
+overflow:hidden;
+font-family:sans-serif;
+background:black; /* video load hone tak black rahega */
 }
 
-.logo-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: float 3s ease-in-out infinite;
+/* video background */
+
+.video-bg{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:0;
 }
 
-.logo-box h1 {
-  font-size: 2.8rem;
-  margin: 10px 0 5px;
-  font-weight: bold;
-  letter-spacing: 1px;
+/* overlay */
+
+.overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.15);
+z-index:1;
 }
 
-.logo-box p {
-  font-size: 1rem;
-  opacity: 0.9;
+/* glass card */
+
+.center-card{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(14px);
+padding:45px 60px;
+border-radius:20px;
+text-align:center;
+color:white;
+z-index:2;
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+/* loader */
+
+.circle-loader{
+width:70px;
+height:70px;
+border:5px solid rgba(255,255,255,0.25);
+border-top:5px solid white;
+border-radius:50%;
+margin:auto;
+margin-bottom:20px;
+animation:spin 1s linear infinite;
+}
+
+/* logo */
+
+.logo-text{
+font-size:46px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+/* tagline */
+
+.tag{
+font-size:14px;
+opacity:.9;
+}
+
+/* bottom loading bar */
+
+.bottom-loader{
+position:absolute;
+bottom:0;
+width:100%;
+height:4px;
+background:rgba(255,255,255,0.25);
+z-index:2;
+}
+
+.line{
+height:100%;
+width:0%;
+background:white;
+animation:load 4s linear forwards;
+}
+
+/* animations */
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+@keyframes load{
+0%{width:0%;}
+100%{width:100%;}
 }

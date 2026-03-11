@@ -1,66 +1,116 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .mongo import users_collection
+import json
+import random
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import User
+from .otp_store import save_otp, verify_otp
+from .email_utils import send_otp_email
 
-class RegisterView(APIView):
-    def post(self, request):
-        data = request.data
 
-        name = data.get("name")
+# REGISTER USER
+@csrf_exempt
+def register_user(request):
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+
         email = data.get("email")
-        phone = data.get("phone")
+        password = data.get("password")
         role = data.get("role")
+
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({"error": "User already exists"}, status=400)
+
+        otp = random.randint(100000, 999999)
+
+        save_otp(email, str(otp))
+        send_otp_email(email, otp)
+
+        return JsonResponse({"message": "OTP sent to email"})
+
+
+# VERIFY OTP
+@csrf_exempt
+def verify_otp_view(request):
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        email = data.get("email")
+        otp = data.get("otp")
+        password = data.get("password")
+        role = data.get("role")
+
+        if verify_otp(email, otp):
+
+            User.objects.create(
+                email=email,
+                password=password,
+                role=role
+            )
+
+            return JsonResponse({"message": "Registration successful"})
+
+        return JsonResponse({"error": "Invalid OTP"}, status=400)
+
+
+# LOGIN USER
+@csrf_exempt
+def login_user(request):
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        email = data.get("email")
         password = data.get("password")
 
-        if not all([name, email, phone, role, password]):
-            return Response(
-                {"error": "All fields required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        try:
+            user = User.objects.get(email=email, password=password)
 
-        if users_collection.find_one({"email": email}):
-            return Response(
-                {"error": "Email already registered"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return JsonResponse({
+                "message": "Login successful",
+                "role": user.role,
+                "token": "sampletoken123"
+            })
 
-        users_collection.insert_one({
-            "name": name.strip(),
-            "email": email.strip().lower(),
-            "phone": phone.strip(),
-            "role": role,
-            "password": password
-        })
+        except User.DoesNotExist:
+            return JsonResponse({"error": "Invalid credentials"}, status=400)
 
-        return Response(
-            {"message": "User registered successfully"},
-            status=status.HTTP_201_CREATED
-        )
 
-class LoginView(APIView):
-    def post(self, request):
-        email = request.data.get("email")
-        password = request.data.get("password")
+# FORGOT PASSWORD
+@csrf_exempt
+def forgot_password(request):
 
-        if not email or not password:
-            return Response(
-                {"error": "Email and password required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+    if request.method == "POST":
+        data = json.loads(request.body)
 
-        user = users_collection.find_one({
-            "email": email,
-            "password": password
-        })
+        email = data.get("email")
 
-        if not user:
-            return Response(
-                {"error": "Invalid credentials"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        otp = random.randint(100000, 999999)
 
-        return Response({
-            "message": "Login success",
-            "role": user["role"]
-        })
+        save_otp(email, str(otp))
+        send_otp_email(email, otp)
+
+        return JsonResponse({"message": "OTP sent for password reset"})
+
+
+# RESET PASSWORD
+@csrf_exempt
+def reset_password(request):
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        email = data.get("email")
+        otp = data.get("otp")
+        new_password = data.get("password")
+
+        if verify_otp(email, otp):
+
+            user = User.objects.get(email=email)
+            user.password = new_password
+            user.save()
+
+            return JsonResponse({"message": "Password reset successful"})
+
+        return JsonResponse({"error": "Invalid OTP"}, status=400)

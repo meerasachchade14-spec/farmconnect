@@ -75,7 +75,6 @@ const Landing = () => {
                   key={index}
                   className="admin-card"
                   whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 200 }}
                 >
                   <h3>{item}</h3>
                   <p>
@@ -90,7 +89,7 @@ const Landing = () => {
             </div>
           </div>
 
-          {/* FEATURE PREVIEW */}
+          {/* FEATURES */}
           <div className="features-preview">
             {[
               { icon: "🌱", title: "Farmers First", desc: "Fair pricing & direct access" },
@@ -102,7 +101,6 @@ const Landing = () => {
                 key={index}
                 className="feature-card"
                 whileHover={{ y: -5 }}
-                transition={{ duration: 0.3 }}
               >
                 <span>{feature.icon}</span>
                 <h4>{feature.title}</h4>
@@ -112,7 +110,7 @@ const Landing = () => {
           </div>
         </motion.div>
 
-        {/* RIGHT */}
+        {/* RIGHT IMAGE */}
         <motion.div
           className="image-section"
           initial={{ opacity: 0, x: 50 }}
@@ -123,8 +121,6 @@ const Landing = () => {
           <motion.img
             src={crops}
             alt="Smart Farming"
-            whileHover={{ scale: 1.03 }}
-            transition={{ duration: 0.3 }}
           />
 
           <motion.div whileHover={{ scale: 1.05 }}>
@@ -133,6 +129,7 @@ const Landing = () => {
             </Link>
           </motion.div>
         </motion.div>
+
       </section>
 
       {/* CONTACT */}
@@ -141,8 +138,6 @@ const Landing = () => {
         id="contact"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
       >
         <h2>Contact Us</h2>
         <p>📧 farmconnect@gmail.com</p>

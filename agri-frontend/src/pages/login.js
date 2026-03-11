@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../auth.css";
 
 const Login = () => {
@@ -20,30 +19,37 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/users/login/",
-        { email, password }
-      );
 
-      const backendRole = res.data.role;
+      const res = await fetch("http://127.0.0.1:8000/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
 
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error);
+        return;
+      }
+
+      const backendRole = data.role;
       if (backendRole !== role) {
         setError("Role mismatch");
         return;
       }
 
-      // Optional: token save
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
       }
 
       setError("");
-
-      // 🔥 Dynamic Redirect
       navigate(`/${backendRole}-dashboard`);
 
     } catch (err) {
-      setError(err.response?.data?.error || "Invalid credentials");
+      setError("Server error");
     }
   };
 
@@ -79,8 +85,12 @@ const Login = () => {
           <button type="submit">Login</button>
         </form>
 
+        <div className="auth-links">
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </div>
+
         <span className="auth-footer">
-          New here? <a href="/register">Create an account</a>
+          New here? <Link to="/register">Create an account</Link>
         </span>
       </div>
     </div>

@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
+/* ---------------- Public Pages ---------------- */
 import Landing from "./pages/Landing";
 import Login from "./pages/login";
 import Register from "./pages/register";
-import Features from "./pages/features";
-import SplashScreen from "./pages/SplashScreen";
+import VerifyOtp from "./pages/VerifyOtp";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Features from "./pages/Features";
 
 /* ---------------- Farmer Pages ---------------- */
 import FarmerDashboard from "./pages/farmer/FarmerDashboard";
 import MyProduct from "./pages/farmer/MyProduct";
 import Order from "./pages/farmer/Order";
 import Earning from "./pages/farmer/Earning";
-import AddProduct from "./pages/farmer/Addproduct";
+import AddProduct from "./pages/farmer/AddProduct";
 import Profile from "./pages/farmer/Profile";
 
 /* ---------------- Buyer Pages ---------------- */
@@ -23,50 +26,51 @@ import MyOrders from "./pages/buyer/MyOrders";
 import Wishlist from "./pages/buyer/Wishlist";
 import BuyerProfile from "./pages/buyer/BuyerProfile";
 
+/* ---------------- Splash Screen ---------------- */
+import SplashScreen from "./pages/SplashScreen";
+
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
+    const timer = setTimeout(() => setLoading(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
+  if (loading) return <SplashScreen />;
+
   return (
-    <AnimatePresence mode="wait">
-      {loading ? (
-        <SplashScreen />
-      ) : (
-        <BrowserRouter>
-          <Routes>
+    <BrowserRouter>
+      <AnimatePresence mode="wait">
+        <Routes>
 
-            {/* -------- Public Pages -------- */}
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/features" element={<Features />} />
+          {/* -------- Public Pages -------- */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/verify-otp" element={<VerifyOtp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/features" element={<Features />} />
 
-            {/* -------- Farmer Routes -------- */}
-            <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
-            <Route path="/farmer/my-products" element={<MyProduct />} />
-            <Route path="/farmer/orders" element={<Order />} />
-            <Route path="/farmer/earnings" element={<Earning />} />
-            <Route path="/farmer/add-product" element={<AddProduct />} />
-            <Route path="/farmer/profile" element={<Profile />} />
+          {/* -------- Farmer Routes -------- */}
+          <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
+          <Route path="/farmer/my-products" element={<MyProduct />} />
+          <Route path="/farmer/orders" element={<Order />} />
+          <Route path="/farmer/earnings" element={<Earning />} />
+          <Route path="/farmer/add-product" element={<AddProduct />} />
+          <Route path="/farmer/profile" element={<Profile />} />
 
-            {/* -------- Buyer Routes -------- */}
-            <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-            <Route path="/buyer/browse" element={<BrowseCrops />} />
-            <Route path="/buyer/orders" element={<MyOrders />} />
-            <Route path="/buyer/wishlist" element={<Wishlist />} />
-            <Route path="/buyer/profile" element={<BuyerProfile />} />
+          {/* -------- Buyer Routes -------- */}
+          <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+          <Route path="/buyer/browse" element={<BrowseCrops />} />
+          <Route path="/buyer/orders" element={<MyOrders />} />
+          <Route path="/buyer/wishlist" element={<Wishlist />} />
+          <Route path="/buyer/profile" element={<BuyerProfile />} />
 
-          </Routes>
-        </BrowserRouter>
-      )}
-    </AnimatePresence>
+        </Routes>
+      </AnimatePresence>
+    </BrowserRouter>
   );
 }
 

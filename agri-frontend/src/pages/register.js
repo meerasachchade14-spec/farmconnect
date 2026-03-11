@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../auth.css";
 
 const Register = () => {
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -15,8 +15,7 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,43 +24,37 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, email, phone, role, password, confirmPassword } = formData;
-
-    if (!name || !email || !phone || !role || !password || !confirmPassword) {
-      setError("All fields are required");
-      return;
-    }
+    const { email, role, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setMessage("Passwords do not match");
       return;
     }
 
     try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/users/register/",
-        {
-          name,
-          email,
-          phone,
-          role,
-          password,
-        }
-      );
 
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
+      const res = await fetch("http://127.0.0.1:8000/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password, role })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage(data.message);
+        // Redirect to OTP verification page
+        navigate("/verify-otp", {
+          state: { email, password, role }
+        });
+      } else {
+        setMessage(data.error);
       }
 
-      setError("");
-      setSuccess("Registration successful 🌱");
-
-      // 🔥 Dynamic Redirect
-      navigate(`/${role}-dashboard`);
-
-    } catch (err) {
-      setSuccess("");
-      setError(err.response?.data?.error || "Server error");
+    } catch (error) {
+      setMessage("Server error");
     }
   };
 
@@ -69,38 +62,29 @@ const Register = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2>Create Account 🌾</h2>
-        <p>Join the FarmConnect marketplace</p>
 
-        {error && <p className="error">{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
+        {message && <p>{message}</p>}
 
         <form onSubmit={handleSubmit}>
           <input
             name="name"
             placeholder="Full Name"
-            value={formData.name}
             onChange={handleChange}
           />
 
           <input
             name="email"
             placeholder="Email"
-            value={formData.email}
             onChange={handleChange}
           />
 
           <input
             name="phone"
             placeholder="Phone"
-            value={formData.phone}
             onChange={handleChange}
           />
 
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-          >
+          <select name="role" onChange={handleChange}>
             <option value="">Register As</option>
             <option value="farmer">Farmer</option>
             <option value="buyer">Buyer</option>
@@ -110,7 +94,6 @@ const Register = () => {
             type="password"
             name="password"
             placeholder="Password"
-            value={formData.password}
             onChange={handleChange}
           />
 
@@ -118,16 +101,11 @@ const Register = () => {
             type="password"
             name="confirmPassword"
             placeholder="Confirm Password"
-            value={formData.confirmPassword}
             onChange={handleChange}
           />
 
           <button type="submit">Register</button>
         </form>
-
-        <span className="auth-footer">
-          Already have an account? <a href="/login">Login</a>
-        </span>
       </div>
     </div>
   );
