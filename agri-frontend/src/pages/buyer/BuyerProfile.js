@@ -1,12 +1,34 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./BuyerProfile.css";
 
-const buyerImage =
+const defaultBuyerImage =
 "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1709390585~exp=1709391185~hmac=7fa0a0fdaeb2e581fa32a22709bcf93e7cf116c451688f44e6d67844cd5a2c33";
 
 function BuyerProfile(){
 
 const [buyerType,setBuyerType] = useState("B2C");
+const [editMode,setEditMode] = useState(false);
+const [loading,setLoading] = useState(true);
+const [message,setMessage] = useState("");
+const [cart,setCart] = useState([]);
+const [wishlist,setWishlist] = useState([]);
+
+const [profile,setProfile] = useState({
+ name: "",
+ email: "",
+ phone: "",
+ company: "",
+ address: "",
+ dob: "",
+ gender: "",
+ avatar_url: "",
+ buyer_type: ""
+});
+
+const email = localStorage.getItem("email");
+const navigate = useNavigate();
 
 useEffect(()=>{
  const type = localStorage.getItem("buyerType");
@@ -15,21 +37,73 @@ useEffect(()=>{
  }
 },[]);
 
-const [editMode,setEditMode] = useState(false);
+useEffect(()=>{
+ if(!email){
+  setLoading(false);
+  return;
+ }
+ axios.get(`http://127.0.0.1:8000/api/users/profile/${email}/`)
+ .then(res=>{
+  setProfile(res.data);
+  setLoading(false);
+ })
+ .catch(()=>setLoading(false));
+},[email]);
 
-const [profile,setProfile] = useState({
- name: buyerType === "B2B" ? "Business Buyer" : "Retail Buyer",
- email: "buyer@email.com",
- phone: "9876543210",
- company: buyerType === "B2B" ? "ABC Traders" : "",
- address: "Ahmedabad, Gujarat",
- dob: "",
- gender: "",
-});
+useEffect(()=>{
+ if(!email) return;
+ axios.get(`http://127.0.0.1:8000/api/buyer/cart/${email}/`)
+ .then(res=>setCart(res.data || []))
+ .catch(()=>setCart([]));
+
+ axios.get(`http://127.0.0.1:8000/api/buyer/wishlist/${email}/`)
+ .then(res=>setWishlist(res.data || []))
+ .catch(()=>setWishlist([]));
+},[email]);
 
 const handleChange = (e)=>{
  setProfile({...profile,[e.target.name]:e.target.value});
 };
+
+const saveProfile = async () => {
+ try{
+  const payload = {
+    ...profile,
+    buyer_type: buyerType
+  };
+  await axios.put(`http://127.0.0.1:8000/api/users/profile/${email}/update/`, payload);
+  setMessage("Profile updated");
+  setEditMode(false);
+ }catch(err){
+  setMessage("Failed to update profile");
+ }
+};
+
+const detectLocation = () => {
+  if (!navigator.geolocation) {
+    setMessage("Geolocation is not supported");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const coords = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+      const updated = { ...profile, address: coords };
+      setProfile(updated);
+      axios.put(`http://127.0.0.1:8000/api/users/profile/${email}/update/`, {
+        address: coords
+      }).then(() => setMessage("Location updated")).catch(() => setMessage("Failed to update location"));
+    },
+    () => setMessage("Location permission denied")
+  );
+};
+
+const changePassword = () => {
+  navigate("/forgot-password", { state: { email } });
+};
+
+if(loading){
+ return <div className="profile-page">Loading...</div>;
+}
 
 return(
 
@@ -43,15 +117,16 @@ return(
 
 <div className="profile-card">
 
-<img src={buyerImage} alt="buyer" className="profile-img"/>
+<img src={profile.avatar_url || defaultBuyerImage} alt="buyer" className="profile-img"/>
 
-<h2>{profile.name}</h2>
+<h2>{profile.name || "Buyer"}</h2>
 
-<p>{profile.email}</p>
+<p>{profile.email || email}</p>
 
-<p>{profile.phone}</p>
+<p>{profile.phone || "-"}</p>
 
-{buyerType === "B2B" && <p><b>Company:</b> {profile.company}</p>}
+{buyerType === "B2B" && <p><b>Company:</b> {profile.company || "-"}</p>}
+{message && <p className="status-msg">{message}</p>}
 
 <button
 className="edit-btn"
@@ -66,9 +141,9 @@ onClick={()=>setEditMode(!editMode)}
 
 <h4>General</h4>
 
-<div className="option">📍 Location</div>
+<div className="option" onClick={detectLocation}>📍 Location</div>
 
-<div className="option">🔒 Change Password</div>
+<div className="option" onClick={changePassword}>🔒 Change Password</div>
 
 <div className="option">🛒 My Orders</div>
 
@@ -128,6 +203,16 @@ onChange={handleChange}
 placeholder="Address"
 />
 
+{buyerType === "B2B" && (
+<input
+type="text"
+name="company"
+value={profile.company}
+onChange={handleChange}
+placeholder="Company Name"
+/>
+)}
+
 <input
 type="date"
 name="dob"
@@ -149,7 +234,7 @@ onChange={handleChange}
 
 </select>
 
-<button className="save-btn">Save Profile</button>
+<button className="save-btn" onClick={saveProfile}>Save Profile</button>
 
 </div>
 
@@ -161,11 +246,11 @@ onChange={handleChange}
 
 <h3>🛒 Buyer Information</h3>
 
-{buyerType === "B2B" && <p><b>Company:</b> {profile.company}</p>}
+{buyerType === "B2B" && <p><b>Company:</b> {profile.company || "-"}</p>}
 
 <p><b>Type:</b> {buyerType}</p>
 
-<p><b>Address:</b> {profile.address}</p>
+<p><b>Address:</b> {profile.address || "-"}</p>
 
 </div>
 
@@ -200,6 +285,24 @@ onChange={handleChange}
 </div>
 
 )}
+
+<div className="widget">
+<h3>🛒 Cart Items</h3>
+{cart.length === 0 ? <p>No items in cart</p> : (
+  cart.slice(0,5).map((c) => (
+    <p key={c.id}>{c.product_name} (x{c.quantity})</p>
+  ))
+)}
+</div>
+
+<div className="widget">
+<h3>💖 Wishlist</h3>
+{wishlist.length === 0 ? <p>No wishlist items</p> : (
+  wishlist.slice(0,5).map((w) => (
+    <p key={w.id}>{w.product_name}</p>
+  ))
+)}
+</div>
 
 </div>
 
