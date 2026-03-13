@@ -1,0 +1,47 @@
+.orders-container{
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.orders-container h2{
+  margin-bottom:20px;
+}
+
+.orders-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.orders-table th{
+  background:#f5f7fa;
+  padding:12px;
+  text-align:left;
+  font-weight:600;
+}
+
+.orders-table td{
+  padding:12px;
+  border-bottom:1px solid #eee;
+}
+
+.orders-table tr:hover{
+  background:#f9fafc;
+}
+
+.order-status{
+  font-weight:600;
+}
+
+.status-delivered{
+  color:#2e9e44;
+}
+
+.status-pending{
+  color:#f39c12;
+}
+
+.status-cancel{
+  color:#e74c3c;
+}

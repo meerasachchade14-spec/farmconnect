@@ -1,0 +1,90 @@
+.buyer-type-page{
+
+width:100%;
+min-height:calc(100vh - 60px);
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+background:#f4f6f8;
+
+}
+
+/* title */
+
+.title{
+
+font-size:28px;
+color:#2e7d32;
+margin-bottom:5px;
+
+}
+
+.subtitle{
+
+color:#666;
+margin-bottom:35px;
+
+}
+
+/* cards */
+
+.type-cards{
+
+display:flex;
+gap:30px;
+justify-content:center;
+
+}
+
+/* card */
+
+.type-card{
+
+width:260px;
+background:white;
+
+padding:25px;
+
+border-radius:14px;
+
+text-align:center;
+
+cursor:pointer;
+
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+
+transition:0.3s;
+
+}
+
+.type-card:hover{
+
+transform:translateY(-6px);
+
+box-shadow:0 12px 25px rgba(0,0,0,0.15);
+
+}
+
+.type-card img{
+
+width:70px;
+margin-bottom:15px;
+
+}
+
+.type-card h3{
+
+margin-bottom:8px;
+color:#2e7d32;
+
+}
+
+.type-card p{
+
+font-size:14px;
+color:#666;
+
+}

@@ -33,7 +33,7 @@ const Register = () => {
 
     try {
 
-      const res = await fetch("http://127.0.0.1:8000/register/", {
+      const res = await fetch("http://127.0.0.1:8000/api/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -44,7 +44,8 @@ const Register = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(data.message);
+        const otpHint = data.otp ? ` OTP (dev): ${data.otp}` : "";
+        setMessage(`${data.msg || "Registration successful."}${otpHint}`);
         // Redirect to OTP verification page
         navigate("/verify-otp", {
           state: { email, password, role }

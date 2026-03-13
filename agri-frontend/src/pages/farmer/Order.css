@@ -1,0 +1,76 @@
+.order-page{
+padding:25px;
+}
+
+.order-title{
+margin-bottom:20px;
+color:#2e7d32;
+}
+
+/* table container */
+
+.order-table{
+background:white;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+overflow:hidden;
+}
+
+/* table */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#2e7d32;
+color:white;
+padding:12px;
+text-align:left;
+font-size:14px;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+
+tr:hover{
+background:#f9f9f9;
+}
+
+/* status badges */
+
+.status{
+padding:5px 10px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.status.delivered{
+background:#d4edda;
+color:#2e7d32;
+}
+
+.status.pending{
+background:#fff3cd;
+color:#856404;
+}
+
+.status.shipped{
+background:#cce5ff;
+color:#004085;
+}
+
+/* empty order */
+
+.no-orders{
+background:white;
+padding:30px;
+text-align:center;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}

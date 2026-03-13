@@ -1,17 +1,35 @@
 import React from "react";
-import "./farmer.css";
+import { useLocation } from "react-router-dom";
+import "./Navbar.css";
 
-function Navbar() {
-  return (
-    <div style={{ 
-      background:"#2e7d32", 
-      color:"white", 
-      padding:"10px 20px",
-      textAlign:"right"
-    }}>
-      Welcome Farmer 🌾
-    </div>
-  );
+function Navbar(){
+
+const location = useLocation();
+
+return(
+
+<div className="navbar">
+
+{/* Search only in My Products page */}
+
+{location.pathname === "/farmer-dashboard/products" && (
+
+<input
+type="text"
+placeholder="Search products..."
+className="search"
+/>
+
+)}
+
+<div className="user">
+👨‍🌾 Farmer
+</div>
+
+</div>
+
+)
+
 }
 
 export default Navbar;

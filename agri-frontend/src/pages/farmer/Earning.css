@@ -1,0 +1,69 @@
+.earning-page{
+  padding:25px;
+  background:#f4f6f8;
+}
+
+/* filter */
+.filter-section{
+  display:flex;
+  justify-content:flex-start;
+  margin-bottom:20px;
+}
+
+.filter-section select{
+  padding:8px 12px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+/* summary cards */
+.earning-cards{
+  display:flex;
+  gap:20px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+
+.earning-card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  width:220px;
+  transition:0.3s;
+}
+
+.earning-card:hover{
+  transform:translateY(-5px);
+}
+
+.earning-card h3{
+  font-size:16px;
+  color:#555;
+}
+
+.earning-amount{
+  font-size:24px;
+  font-weight:bold;
+  color:#2e7d32;
+}
+
+.earning-number{
+  font-size:22px;
+  font-weight:bold;
+}
+
+/* charts */
+.chart-box{
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom:30px;
+  height:300px; /* chhota aur premium */
+}
+
+.chart-box h3{
+  margin-bottom:15px;
+  color:#2e7d32;
+}

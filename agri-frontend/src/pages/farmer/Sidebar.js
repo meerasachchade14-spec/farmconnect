@@ -1,25 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Sidebar.css";   // 👈 ye add karo
+import "./Sidebar.css";
 
-const Sidebar = () => {
+function Sidebar() {
   return (
     <div className="sidebar">
-      <h2>🌾 Farmer</h2>
-      
-      <div><Link to="/farmer-dashboard">Dashboard</Link></div>
+      <h2 className="sidebar-logo">Farmer Panel</h2>
 
-      <div><Link to="/farmer/add-product">Add Product</Link></div>
+      <ul className="sidebar-menu">
+        <li>
+          <Link to="">Dashboard</Link>
+        </li>
 
-      <div><Link to="/farmer/my-products">My Products</Link></div>
+        <li>
+          <Link to="add-product">Add Product</Link>
+        </li>
 
-      <div><Link to="/farmer/orders">Orders</Link></div>
+        <li>
+          <Link to="my-products">My Products</Link>
+        </li>
 
-      <div><Link to="/farmer/earnings">Earnings</Link></div>
-      
-      <div><Link to="/farmer/profile">Profile</Link></div>
-  </div>
+        <li>
+          <Link to="orders">Orders</Link>
+        </li>
+
+        <li>
+          <Link to="earnings">Earnings</Link>
+        </li>
+
+        <li>
+          <Link to="profile">Profile</Link>
+        </li>
+      </ul>
+    </div>
   );
-};
+}
 
 export default Sidebar;

@@ -16,7 +16,7 @@ const ResetPassword = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/reset-password/", {
+      const res = await fetch("http://127.0.0.1:8000/api/reset-password/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp, password: newPassword })
@@ -25,14 +25,14 @@ const ResetPassword = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(data.message);
+        setMessage(data.msg || "Password reset successful");
 
         // ✅ Auto login after reset
         localStorage.setItem("token", "sampletoken123"); // replace with real token
         setTimeout(() => navigate("/login"), 1000);
 
       } else {
-        setMessage(data.error);
+        setMessage(data.error || "Password reset failed");
       }
     } catch (err) {
       setMessage("Server error");

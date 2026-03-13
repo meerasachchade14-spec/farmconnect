@@ -1,0 +1,93 @@
+.orders{
+padding:25px;
+}
+
+.orders h2{
+margin-bottom:20px;
+color:#2e7d32;
+}
+
+/* GRID */
+
+.order-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+/* CARD */
+
+.order-card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.order-card h3{
+margin-bottom:10px;
+}
+
+.order-card p{
+margin:4px 0;
+color:#555;
+}
+
+/* STATUS */
+
+.status{
+display:inline-block;
+padding:5px 10px;
+border-radius:20px;
+font-size:13px;
+margin-top:10px;
+}
+
+.delivered{
+background:#e8f5e9;
+color:#2e7d32;
+}
+
+.pending{
+background:#fff3e0;
+color:#ef6c00;
+}
+
+.shipped{
+background:#e3f2fd;
+color:#1565c0;
+}
+
+/* BUTTONS */
+
+.order-actions{
+margin-top:15px;
+display:flex;
+gap:10px;
+}
+
+.track-btn{
+padding:7px 12px;
+border:none;
+background:#2e7d32;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.cancel-btn{
+padding:7px 12px;
+border:none;
+background:#d32f2f;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.track-btn:hover{
+background:#1b5e20;
+}
+
+.cancel-btn:hover{
+background:#b71c1c;
+}

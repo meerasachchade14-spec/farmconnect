@@ -1,36 +1,48 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./buyer.css";
+import React,{useEffect,useState} from "react";
+import axios from "axios";
+import "./MyOrders.css";
 
-function MyOrders() {
-  return (
-    <div className="dashboard-container">
-      <div className="buyer-sidebar">
-        <h2>FarmConnect</h2>
-        <Link to="/buyer">Dashboard</Link>
-        <Link to="/buyer/browse">Browse Crops</Link>
-        <Link to="/buyer/orders">My Orders</Link>
-        <Link to="/buyer/wishlist">Wishlist</Link>
-        <Link to="/buyer/profile">Profile</Link>
-      </div>
+function MyOrders(){
 
-      <div className="buyer-main">
-        <div className="topbar">
-          <h3>My Orders</h3>
-        </div>
+const [orders,setOrders] = useState([]);
 
-        <div className="card">
-          <p>Order #101 - Wheat - ₹4000</p>
-          <p>Status: Delivered</p>
-        </div>
+useEffect(()=>{
 
-        <div className="card" style={{marginTop:"20px"}}>
-          <p>Order #102 - Cotton - ₹6000</p>
-          <p>Status: Pending</p>
-        </div>
-      </div>
-    </div>
-  );
+const email = localStorage.getItem("email");
+
+axios.get(`http://127.0.0.1:8000/buyer/order/${email}/`)
+.then(res=>{
+setOrders(res.data);
+});
+
+},[]);
+
+return(
+
+<div className="orders">
+
+<h2>My Orders</h2>
+
+<div className="order-grid">
+
+{orders.map((order)=>(
+<div className="order-card" key={order.id}>
+
+<h3>{order.product_name}</h3>
+
+<p>Quantity: {order.quantity}</p>
+
+<p>Status: {order.status}</p>
+
+</div>
+))}
+
+</div>
+
+</div>
+
+)
+
 }
 
 export default MyOrders;

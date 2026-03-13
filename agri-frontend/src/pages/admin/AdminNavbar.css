@@ -1,0 +1,43 @@
+.admin-navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:15px 25px;
+
+background:white;
+
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+
+position:sticky;
+top:0;
+z-index:10;
+}
+
+/* search */
+
+.search{
+padding:10px 14px;
+border:1px solid #ddd;
+border-radius:8px;
+
+width:260px;
+
+font-size:14px;
+
+transition:0.2s;
+}
+
+.search:focus{
+outline:none;
+border:1px solid #2e7d32;
+box-shadow:0 0 0 2px rgba(46,125,50,0.15);
+}
+
+/* admin user */
+
+.admin-user{
+font-weight:600;
+color:#2e7d32;
+font-size:15px;
+}

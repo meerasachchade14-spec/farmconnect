@@ -1,0 +1,75 @@
+.navbar{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+background:white;
+
+padding:14px 25px;
+
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+
+position:sticky;
+top:0;
+z-index:10;
+
+}
+
+/* SEARCH BAR */
+
+.search{
+
+padding:10px 14px;
+
+width:260px;
+
+border-radius:8px;
+
+border:1px solid #ddd;
+
+font-size:14px;
+
+transition:0.2s;
+
+}
+
+.search:focus{
+
+outline:none;
+
+border:1px solid #2e7d32;
+
+box-shadow:0 0 0 2px rgba(46,125,50,0.15);
+
+}
+
+/* PROFILE SECTION */
+
+.profile{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+font-weight:500;
+
+color:#333;
+
+}
+
+/* PROFILE IMAGE */
+
+.profile img{
+
+width:36px;
+
+height:36px;
+
+border-radius:50%;
+
+border:2px solid #e6e6e6;
+
+}

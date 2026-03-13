@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/forgot-password/", {
+      const res = await fetch("http://127.0.0.1:8000/api/forgot-password/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
@@ -20,10 +20,11 @@ const ForgotPassword = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(data.message);
+        const otpHint = data.otp ? ` OTP (dev): ${data.otp}` : "";
+        setMessage(`${data.msg || "OTP sent."}${otpHint}`);
         setTimeout(() => navigate("/reset-password", { state: { email } }), 1000);
       } else {
-        setMessage(data.error);
+        setMessage(data.error || "Failed to send OTP");
       }
     } catch (err) {
       setMessage("Server error");

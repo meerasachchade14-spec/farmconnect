@@ -1,31 +1,61 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./buyer.css";
+import React,{useEffect,useState} from "react";
+import axios from "axios";
+import "./Wishlist.css";
 
-function Wishlist() {
-  return (
-    <div className="dashboard-container">
-      <div className="buyer-sidebar">
-        <h2>FarmConnect</h2>
-        <Link to="/buyer">Dashboard</Link>
-        <Link to="/buyer/browse">Browse Crops</Link>
-        <Link to="/buyer/orders">My Orders</Link>
-        <Link to="/buyer/wishlist">Wishlist</Link>
-        <Link to="/buyer/profile">Profile</Link>
-      </div>
+function Wishlist(){
 
-      <div className="buyer-main">
-        <div className="topbar">
-          <h3>Wishlist</h3>
-        </div>
+const [items,setItems] = useState([]);
 
-        <div className="card">
-          <p>Rice - ₹1800</p>
-          <button className="button">Buy Now</button>
-        </div>
-      </div>
-    </div>
-  );
+const email = localStorage.getItem("email");
+
+useEffect(()=>{
+
+axios.get(`http://127.0.0.1:8000/buyer/wishlist/${email}/`)
+.then(res=>{
+setItems(res.data);
+});
+
+},[]);
+
+const removeItem = async(id)=>{
+
+await axios.delete("http://127.0.0.1:8000/buyer/wishlist/remove/",{
+data:{id}
+});
+
+alert("Removed");
+
+}
+
+return(
+
+<div className="wishlist">
+
+<h2>My Wishlist</h2>
+
+<div className="wishlist-grid">
+
+{items.map((item)=>(
+<div className="wishlist-card" key={item.id}>
+
+<h3>{item.product_name}</h3>
+
+<button
+className="remove-btn"
+onClick={()=>removeItem(item.id)}
+>
+Remove
+</button>
+
+</div>
+))}
+
+</div>
+
+</div>
+
+)
+
 }
 
 export default Wishlist;

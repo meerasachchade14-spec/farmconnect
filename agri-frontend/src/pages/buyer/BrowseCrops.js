@@ -1,52 +1,65 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./buyer.css";
+import React,{useEffect,useState} from "react";
+import axios from "axios";
+import "./BrowseCrops.css";
 
-import wheat from "../../assests/crops/wheat.jpg";
-import rice from "../../assests/crops/rice.jpg";
-import cotton from "../../assests/crops/cotton.jpg";
+function BrowseCrops(){
 
-function BrowseCrops() {
-  return (
-    <div className="dashboard-container">
+const [crops,setCrops] = useState([]);
 
-      <div className="buyer-sidebar">
-        <h2>FarmConnect</h2>
-        <Link to="/buyer">Dashboard</Link>
-        <Link to="/buyer/browse">Browse Crops</Link>
-        <Link to="/buyer/orders">My Orders</Link>
-        <Link to="/buyer/wishlist">Wishlist</Link>
-        <Link to="/buyer/profile">Profile</Link>
-      </div>
+useEffect(()=>{
 
-      <div className="buyer-main">
-        <div className="topbar">
-          <h3>Browse Crops</h3>
-        </div>
+axios.get("http://127.0.0.1:8000/products/")
+.then(res=>{
+setCrops(res.data);
+});
 
-        <div className="product-grid">
-          <div className="product-card">
-            <img src={wheat} alt="wheat"/>
-            <h4>Wheat - ₹2000</h4>
-            <button className="button">Add to Cart</button>
-          </div>
+},[]);
 
-          <div className="product-card">
-            <img src={rice} alt="rice"/>
-            <h4>Rice - ₹1800</h4>
-            <button className="button">Add to Cart</button>
-          </div>
+const addToCart = async(item)=>{
 
-          <div className="product-card">
-            <img src={cotton} alt="cotton"/>
-            <h4>Cotton - ₹6000</h4>
-            <button className="button">Add to Cart</button>
-          </div>
-        </div>
+const email = localStorage.getItem("email");
 
-      </div>
-    </div>
-  );
+await axios.post("http://127.0.0.1:8000/buyer/cart/add/",{
+buyer_email:email,
+product_name:item.name,
+quantity:1
+});
+
+alert("Added to cart");
+
+}
+
+return(
+
+<div>
+
+<h2>Browse Crops</h2>
+
+<div className="crop-grid">
+
+{crops.map((item)=>(
+<div className="crop-card" key={item.id}>
+
+<h3>{item.name}</h3>
+
+<p>₹ {item.price}/kg</p>
+
+<button
+className="cart-btn"
+onClick={()=>addToCart(item)}
+>
+Add To Cart
+</button>
+
+</div>
+))}
+
+</div>
+
+</div>
+
+)
+
 }
 
 export default BrowseCrops;

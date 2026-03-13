@@ -144,6 +144,13 @@ const Landing = () => {
         <p>📞 +91 79840 59194</p>
         <p>📍 India</p>
       </motion.section>
+
+      {/* FOOTER WITH HIDDEN ADMIN LOGIN */}
+      <footer className="footer">
+        <p>© 2026 FarmConnect</p>
+        <Link to="/admin-login" className="admin-link">Admin</Link>
+      </footer>
+
     </>
   );
 };

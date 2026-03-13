@@ -1,44 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import BuyerSidebar from "./BuyerSidebar";
+import BuyerNavbar from "./BuyerNavbar";
 import "./buyer.css";
 
 function BuyerDashboard() {
-  return (
-    <div className="dashboard-container">
 
-      <div className="buyer-sidebar">
-        <h2>FarmConnect</h2>
-        <Link to="/buyer">Dashboard</Link>
-        <Link to="/buyer/browse">Browse Crops</Link>
-        <Link to="/buyer/orders">My Orders</Link>
-        <Link to="/buyer/wishlist">Wishlist</Link>
-        <Link to="/buyer/profile">Profile</Link>
-      </div>
+const [buyerType,setBuyerType] = useState("");
 
-      <div className="buyer-main">
-        <div className="topbar">
-          <h3>Buyer Dashboard</h3>
-          <p>Welcome Buyer 👋</p>
-        </div>
+useEffect(()=>{
+ const type = localStorage.getItem("buyerType");
+ setBuyerType(type);
+},[]);
 
-        <div className="cards">
-          <div className="card">
-            <h4>Available Crops</h4>
-            <h2>24</h2>
-          </div>
-          <div className="card">
-            <h4>Total Orders</h4>
-            <h2>10</h2>
-          </div>
-          <div className="card">
-            <h4>Total Spending</h4>
-            <h2>₹65,000</h2>
-          </div>
-        </div>
+return (
 
-      </div>
-    </div>
-  );
+<div className="buyer-layout">
+
+<BuyerSidebar buyerType={buyerType} />
+
+<div className="dashboard-section">
+
+<BuyerNavbar buyerType={buyerType} />
+
+<div className="dashboard-content">
+
+<Outlet context={{buyerType}} />
+
+</div>
+
+</div>
+
+</div>
+
+);
+
 }
 
 export default BuyerDashboard;

@@ -15,7 +15,7 @@ const VerifyOtp = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/verify-otp/", {
+      const res = await fetch("http://127.0.0.1:8000/api/verify-otp/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp, password, role })
@@ -24,14 +24,16 @@ const VerifyOtp = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(data.message);
+        setMessage(data.msg || "OTP verified");
 
         // ✅ Directly save token and go to dashboard
         localStorage.setItem("token", "sampletoken123"); // ya backend se real token
+        if (email) localStorage.setItem("email", email);
+        if (role) localStorage.setItem("role", role);
         setTimeout(() => navigate(`/${role}-dashboard`), 1000);
 
       } else {
-        setMessage(data.error);
+        setMessage(data.error || "OTP verification failed");
       }
 
     } catch (err) {
