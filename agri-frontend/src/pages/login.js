@@ -43,6 +43,10 @@ const Login = () => {
 
       localStorage.setItem("email", data.email);
       localStorage.setItem("role", data.role);
+      if (data.name) localStorage.setItem("name", data.name);
+      if (data.phone) localStorage.setItem("phone", data.phone);
+      if (data.avatar_url) localStorage.setItem("avatar_url", data.avatar_url);
+      if (data.status) localStorage.setItem("status", data.status);
 
       if (data.token) {
         localStorage.setItem("token", data.token);

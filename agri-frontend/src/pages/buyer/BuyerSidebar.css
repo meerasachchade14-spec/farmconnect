@@ -1,22 +1,54 @@
-.logo{
-margin-bottom:30px;
+.sidebar{
+width:240px;
+height:100vh;
+background:#1f8a34;
+padding:25px;
+color:white;
+position:fixed;
+left:0;
+top:0;
+overflow-y:auto;
 }
+
+/* LOGO */
+
+.sidebar-logo{
+margin-bottom:45px;
+font-size:30px;
+font-weight:700;
+color:white;
+text-align:center;
+letter-spacing:1px;
+display:block;
+}
+
+/* MENU */
 
 .sidebar ul{
 list-style:none;
 padding:0;
+margin:0;
 }
 
 .sidebar li{
-margin-bottom:18px;
+margin-bottom:22px;
 }
+
+/* LINKS */
 
 .sidebar a{
 color:white;
 text-decoration:none;
-font-size:16px;
+font-size:18px;
+font-weight:500;
+display:block;
+padding:10px 14px;
+border-radius:8px;
+transition:0.3s;
 }
 
 .sidebar a:hover{
-color:#c8ffd1;
+background:rgba(255,255,255,0.15);
+padding-left:18px;
+color:#ffffff;
 }

@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import User,Product,Order,Cart,Wishlist
+from .models import User, Product, Order, Cart, Wishlist
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = '__all__'   # includes new fields automatically
 
 
 class ProductSerializer(serializers.ModelSerializer):

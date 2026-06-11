@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { adminLogin } from "../services/adminAuth";
 import { useNavigate } from "react-router-dom";
 import "../auth.css";
 
@@ -16,36 +14,29 @@ const AdminLogin = () => {
 
     e.preventDefault();
 
-    if(!email || !password){
+    // VALIDATION
+
+    if (!email || !password) {
+
       setError("All fields are required");
       return;
     }
 
-    try {
+    // ADMIN LOGIN
 
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/login/",
-        {
-          email: email,
-          password: password
-        }
-      );
+    if (
+      email === "meerasachchade14@gmail.com" &&
+      password === "iloveyou"
+    ) {
 
-      if (res.data?.role !== "admin") {
-        setError("Not an admin account");
-        return;
-      }
-
-      if (res.data?.token) {
-        adminLogin(res.data.token);
-      } else {
-        adminLogin("admin-session");
-      }
+      localStorage.setItem("email", email);
+      localStorage.setItem("role", "admin");
+      localStorage.setItem("admin", true);
 
       navigate("/admin-dashboard");
 
     } 
-    catch (error) {
+    else {
 
       setError("Invalid Admin Credentials");
 
@@ -60,15 +51,20 @@ const AdminLogin = () => {
       <form className="auth-card" onSubmit={handleLogin}>
 
         <h2>Admin Login 👨‍💼</h2>
+
         <p>Login to Admin Panel</p>
 
-        {error && <div className="error">{error}</div>}
+        {error && (
+          <div className="error">
+            {error}
+          </div>
+        )}
 
         <input
           type="email"
           placeholder="Admin Email"
           value={email}
-          onChange={(e)=>setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
 
@@ -76,7 +72,7 @@ const AdminLogin = () => {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e)=>setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
 

@@ -24,10 +24,11 @@ import Profile from "./pages/farmer/Profile";
 import BuyerDashboard from "./pages/buyer/BuyerDashboard";
 import BuyerTypeSelect from "./pages/buyer/BuyerTypeSelect";
 import BrowseCrops from "./pages/buyer/BrowseCrops";
-import MyOrders from "./pages/buyer/MyOrders";
+import MyOrders from "./pages/buyer/MyCart";
 import Wishlist from "./pages/buyer/Wishlist";
 import BuyerProfile from "./pages/buyer/BuyerProfile";
 import BuyerHome from "./pages/buyer/BuyerHome";
+import PaymentPage from "./pages/buyer/PaymentPage";
 
 
 /* ---------------- Admin Pages ---------------- */
@@ -37,7 +38,6 @@ import DashboardHomeAdmin from "./pages/admin/DashboardHome";
 import ManageFarmers from "./pages/admin/ManageFarmers";
 import ManageBuyers from "./pages/admin/ManageBuyers";
 import ManageProducts from "./pages/admin/ManageProducts";
-import OrderAdmin from "./pages/admin/OrderAdmin";
 
 /* ---------------- Splash Screen ---------------- */
 import SplashScreen from "./pages/SplashScreen";
@@ -75,7 +75,6 @@ function App() {
             <Route path="farmers" element={<ManageFarmers />} />
             <Route path="buyers" element={<ManageBuyers />} />
             <Route path="products" element={<ManageProducts />} />
-            <Route path="orders" element={<OrderAdmin />} />
           </Route>
 
           {/* -------- Farmer Routes -------- */}
@@ -96,6 +95,7 @@ function App() {
             <Route path="orders" element={<MyOrders />} />
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="profile" element={<BuyerProfile />} />
+            <Route path="payment" element={<PaymentPage />} />
            
           </Route>
 

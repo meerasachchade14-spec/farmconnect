@@ -21,21 +21,30 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 3rem;
-  background: #4caf50;
-  color: white;
+  background: #f5fff5;
+  color: #2e7d32;
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid #e0efe0;
 }
 
+/* LOGO */
 .logo {
   font-weight: 700;
+  font-size: 28px;
   letter-spacing: 1px;
+  color: #2e7d32 !important;   /* GREEN FARMCONNECT */
+}
+
+.logo a{
+  text-decoration:none;
+  color:#2e7d32 !important;
 }
 
 .nav-links a {
   margin: 0 1rem;
-  color: white;
+  color: #2e7d32;
   text-decoration: none;
   font-weight: 500;
   transition: opacity 0.3s ease;
@@ -49,8 +58,8 @@ body {
   margin-left: 1rem;
   padding: 0.5rem 1.2rem;
   border-radius: 25px;
-  background: white;
-  color: #4caf50;
+  background: #2e7d32;
+  color: white;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -63,13 +72,13 @@ body {
 
 .btn-outline {
   background: transparent;
-  border: 2px solid white;
-  color: white;
+  border: 2px solid #2e7d32;
+  color: #2e7d32;
 }
 
 .btn-outline:hover {
-  background: white;
-  color: #4caf50;
+  background: #2e7d32;
+  color: white;
 }
 
 /* HERO */
@@ -82,6 +91,7 @@ body {
 .hero h1 {
   font-size: 2.5rem;
   font-weight: 700;
+  color:#2e7d32;
 }
 
 .hero p {
@@ -113,6 +123,7 @@ body {
 
 .admin-preview h2 {
   margin-bottom: 0.5rem;
+  color:#2e7d32;
 }
 
 .admin-cards {
@@ -133,6 +144,37 @@ body {
 
 .admin-card:hover {
   transform: translateY(-5px);
+}
+
+.product-mini-list{
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 8px;
+}
+
+.product-mini-item{
+  display: grid;
+  grid-template-columns: 1.4fr 0.7fr 0.9fr;
+  gap: 8px;
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e7f1e7;
+  font-size: 0.9rem;
+}
+
+.product-name{
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.product-price{
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.product-stock{
+  color: #555;
 }
 
 /* FEATURE PREVIEW */
@@ -219,6 +261,7 @@ body {
 
 .contact h2 {
   margin-bottom: 1rem;
+  color:#2e7d32;
 }
 
 .contact p {
@@ -241,6 +284,7 @@ body {
     width: 100%;
   }
 }
+
 /* SPLASH SCREEN */
 .splash {
   height: 100vh;
@@ -254,8 +298,8 @@ body {
   font-weight: 700;
   letter-spacing: 2px;
 }
-/* FOOTER */
 
+/* FOOTER */
 .footer{
   margin-top:40px;
   padding:20px;
@@ -267,7 +311,6 @@ body {
 }
 
 /* HIDDEN ADMIN LINK */
-
 .admin-link{
   margin-left:10px;
   font-size:12px;

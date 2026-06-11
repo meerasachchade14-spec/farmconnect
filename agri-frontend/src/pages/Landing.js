@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "./landing.css";
@@ -10,6 +10,19 @@ const fadeUp = {
 };
 
 const Landing = () => {
+  const [data, setData] = useState({
+    farmers: { pending: 0, approved: 0, total: 0 },
+    products: { total: 0, items: [] },
+    stats: { farmers: 0, buyers: 0, products: 0, orders: 0 }
+  });
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/landing/overview/")
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch(() => {});
+  }, []);
+
   return (
     <>
       {/* NAVBAR */}
@@ -70,32 +83,46 @@ const Landing = () => {
             <p>Central control for the entire marketplace</p>
 
             <div className="admin-cards">
-              {["Farmers", "Products", "Orders"].map((item, index) => (
-                <motion.div
-                  key={index}
-                  className="admin-card"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <h3>{item}</h3>
-                  <p>
-                    {item === "Farmers"
-                      ? "Verify & manage"
-                      : item === "Products"
-                      ? "Price & stock"
-                      : "Track delivery"}
-                  </p>
-                </motion.div>
-              ))}
+              <motion.div
+                className="admin-card"
+                whileHover={{ scale: 1.05 }}
+              >
+                <h3>Farmers</h3>
+                <p>Pending: {data.farmers.pending}</p>
+                <p>Approved: {data.farmers.approved}</p>
+              </motion.div>
+              <motion.div
+                className="admin-card"
+                whileHover={{ scale: 1.05 }}
+              >
+                <h3>Products</h3>
+                <p>Available: {data.products.total}</p>
+                <p>Price & stock</p>
+              </motion.div>
+            </div>
+
+            <div className="product-mini-list">
+              {data.products.items.length === 0 ? (
+                <p>No products yet</p>
+              ) : (
+                data.products.items.map((item) => (
+                  <div className="product-mini-item" key={item.id}>
+                    <span className="product-name">{item.name}</span>
+                    <span className="product-price">₹ {item.price}</span>
+                    <span className="product-stock">Stock: {item.quantity ?? "-"}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
           {/* FEATURES */}
           <div className="features-preview">
             {[
-              { icon: "🌱", title: "Farmers First", desc: "Fair pricing & direct access" },
-              { icon: "🥬", title: "Fresh Produce", desc: "Quality checked by admin" },
-              { icon: "⭐", title: "Rated Quality", desc: "Trusted reviews" },
-              { icon: "🚚", title: "Order Tracking", desc: "Live delivery updates" }
+              { icon: "🌱", title: "Farmers First", desc: `Total Farmers: ${data.stats.farmers}` },
+              { icon: "🥬", title: "Fresh Produce", desc: `Total Products: ${data.stats.products}` },
+              { icon: "⭐", title: "Rated Quality", desc: `Approved Farmers: ${data.farmers.approved}` },
+              { icon: "🚚", title: "Order Tracking", desc: `Total Orders: ${data.stats.orders}` }
             ].map((feature, index) => (
               <motion.div
                 key={index}

@@ -8,6 +8,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# ================= APPS =================
+
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
@@ -21,6 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# ================= MIDDLEWARE =================
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -32,37 +36,44 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
-
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+
+    # ================= DATABASE =================
+    
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'farmconnect_db',
-        'CLIENT': {
-            'host': 'mongodb://localhost:27017',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# ================= CORS =================
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+CSRF_COOKIE_SECURE = False
+
+# ================= TIME =================
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
+# ================= TEMPLATES =================
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
         'DIRS': [],
-
         'APP_DIRS': True,
-
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -70,10 +81,15 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/static/'
+# ================= STATIC =================
 
+STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ================= EMAIL =================
 
-EMAIL_HOST_USER = "your_email@gmail.com"
-EMAIL_HOST_PASSWORD = "your_app_password"
+EMAIL_HOST_USER = "meera.ldrp.7@gmail.com"
+EMAIL_HOST_PASSWORD = "ihel tdiq upvm lijx"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

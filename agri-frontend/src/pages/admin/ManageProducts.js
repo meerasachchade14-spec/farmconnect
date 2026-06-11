@@ -1,76 +1,86 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./ManageProducts.css";
 
-function ManageProducts(){
+function ManageProducts() {
 
-const [products,setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
-useEffect(()=>{
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/api/products/")
+      .then(res => {
+        setProducts(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+        setProducts([]);
+      });
+  }, []);
 
-axios.get("http://127.0.0.1:8000/products/")
-.then(res=>{
-setProducts(res.data);
-});
+  const deleteProduct = async (id) => {
+    try {
+      await axios.delete(
+        "http://127.0.0.1:8000/api/admin/product/delete/",
+        {
+          data: { id }   // ✅ backend expects id in body
+        }
+      );
 
-},[]);
+      alert("Product Deleted");
 
-const deleteProduct = async(id)=>{
+      // UI update
+      setProducts(prev => prev.filter(product => product.id !== id));
 
-await axios.delete("http://127.0.0.1:8000/admin/product/delete/",{
-data:{id}
-});
+    } catch (err) {
+      console.error(err.response?.data || err);
+      alert("Delete failed");
+    }
+  };
 
-alert("Product Deleted");
+  return (
+    <div className="products-container">
 
-}
+      <h2>All Products</h2>
 
-return(
+      <table className="products-table">
 
-<div className="products-container">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-<h2>All Products</h2>
+        <tbody>
 
-<table className="products-table">
+          {products.length === 0 ? (
+            <tr>
+              <td colSpan="3">No products found</td>
+            </tr>
+          ) : (
+            products.slice(0, 10).map((product) => (
+              <tr key={product.id}>
+                <td>{product.name}</td>
+                <td>₹ {product.price}</td>
+                <td>
+                  <button
+                    className="delete-product"
+                    onClick={() => deleteProduct(product.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
 
-<thead>
-<tr>
-<th>Product</th>
-<th>Price</th>
-<th>Action</th>
-</tr>
-</thead>
+        </tbody>
 
-<tbody>
+      </table>
 
-{products.map((product)=>(
-<tr key={product.id}>
-
-<td>{product.name}</td>
-<td>₹ {product.price}</td>
-
-<td>
-
-<button
-className="delete-product"
-onClick={()=>deleteProduct(product.id)}
->
-Delete
-</button>
-
-</td>
-
-</tr>
-))}
-
-</tbody>
-
-</table>
-
-</div>
-
-)
-
+    </div>
+  );
 }
 
 export default ManageProducts;

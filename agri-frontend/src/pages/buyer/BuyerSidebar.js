@@ -2,41 +2,59 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./BuyerSidebar.css";
 
-function BuyerSidebar(){
+function BuyerSidebar() {
 
-return(
+  return (
 
-<div className="sidebar">
+    <div className="sidebar">
 
-<h2 className="logo">FarmConnect</h2>
+      <h2 className="sidebar-logo">
+        Buyer
+      </h2>
 
-<ul>
+      <ul>
 
-<li>
-<Link to="/buyer-dashboard">Dashboard</Link>
-</li>
+        <li>
+          <Link to="/buyer-dashboard">
+            Dashboard
+          </Link>
+        </li>
 
-<li>
-<Link to="/buyer-dashboard/browse">Browse Crops</Link>
-</li>
+        <li>
+          <Link to="/buyer-dashboard/browse">
+            Browse Crops
+          </Link>
+        </li>
 
-<li>
-<Link to="/buyer-dashboard/orders">My Orders</Link>
-</li>
+        <li>
+          <Link to="/buyer-dashboard/orders">
+            My Cart
+          </Link>
+        </li>
 
-<li>
-<Link to="/buyer-dashboard/wishlist">Wishlist</Link>
-</li>
+        <li>
+          <Link to="/buyer-dashboard/wishlist">
+            Wishlist
+          </Link>
+        </li>
 
-<li>
-<Link to="/buyer-dashboard/profile">Profile</Link>
-</li>
+        <li>
+          <Link to="/buyer-dashboard/payment">
+            Payment
+          </Link>
+        </li>
 
-</ul>
+        <li>
+          <Link to="/buyer-dashboard/profile">
+            Profile
+          </Link>
+        </li>
 
-</div>
+      </ul>
 
-)
+    </div>
+
+  );
 
 }
 

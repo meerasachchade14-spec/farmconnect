@@ -9,6 +9,11 @@
   margin-bottom:20px;
   color:#2e7d32;
 }
+.status-msg{
+  margin:10px 0 15px 0;
+  color:#2e7d32;
+  font-weight:600;
+}
 
 .farmers-table{
   width:100%;

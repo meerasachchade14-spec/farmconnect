@@ -23,14 +23,7 @@ className="search"
 )}
 
 <div className="profile">
-
 <span>Buyer</span>
-
-<img
-src="https://i.pravatar.cc/40"
-alt="profile"
-/>
-
 </div>
 
 </div>

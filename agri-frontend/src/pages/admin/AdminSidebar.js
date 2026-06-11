@@ -26,10 +26,6 @@ function AdminSidebar() {
           <Link to="/admin-dashboard/products">Products</Link>
         </li>
 
-        <li>
-          <Link to="/admin-dashboard/orderAdmin">Order</Link>
-        </li>
-
       </ul>
 
     </div>

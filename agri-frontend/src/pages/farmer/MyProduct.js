@@ -10,7 +10,7 @@ useEffect(()=>{
 
 const email = localStorage.getItem("email");
 
-axios.get(`http://127.0.0.1:8000/farmer/products/${email}/`)
+axios.get(`http://127.0.0.1:8000/api/farmer/products/${email}/`)
 .then(res=>{
 setProducts(res.data);
 });
@@ -28,9 +28,15 @@ return(
 {products.map((item)=>(
 <div className="product-card" key={item.id}>
 
+{item.image_url && <img src={item.image_url} alt={item.name} className="crop-img" />}
+
 <h3>{item.name}</h3>
 
 <p>₹ {item.price} /kg</p>
+<p><b>Details:</b> {item.details || "Fresh crop"}</p>
+<p><b>Atmosphere:</b> {item.atmosphere || "-"}</p>
+<p><b>Land:</b> {item.land || "-"}</p>
+<p><b>Soil:</b> {item.soil || item.sand || "-"}</p>
 
 </div>
 ))}

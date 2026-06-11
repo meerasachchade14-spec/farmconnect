@@ -23,7 +23,7 @@ className="search"
 )}
 
 <div className="user">
-👨‍🌾 Farmer
+Farmer Dashboard
 </div>
 
 </div>

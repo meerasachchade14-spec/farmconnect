@@ -4,7 +4,6 @@ from django.conf import settings
 
 
 def send_otp_email(receiver_email, otp):
-
     subject = "FarmConnect OTP"
     body = f"Your OTP is {otp}"
 
@@ -13,18 +12,27 @@ def send_otp_email(receiver_email, otp):
     msg["From"] = settings.EMAIL_HOST_USER
     msg["To"] = receiver_email
 
-    server = smtplib.SMTP("smtp.gmail.com",587)
-    server.starttls()
+    host = getattr(settings, "EMAIL_HOST", "smtp.gmail.com")
+    port = getattr(settings, "EMAIL_PORT", 587)
+    use_tls = getattr(settings, "EMAIL_USE_TLS", True)
 
-    server.login(
-        settings.EMAIL_HOST_USER,
-        settings.EMAIL_HOST_PASSWORD
-    )
+    try:
+        server = smtplib.SMTP(host, port, timeout=10)
+        if use_tls:
+            server.starttls()
 
-    server.sendmail(
-        settings.EMAIL_HOST_USER,
-        receiver_email,
-        msg.as_string()
-    )
+        server.login(
+            settings.EMAIL_HOST_USER,
+            settings.EMAIL_HOST_PASSWORD
+        )
 
-    server.quit()
+        server.sendmail(
+            settings.EMAIL_HOST_USER,
+            receiver_email,
+            msg.as_string()
+        )
+
+        server.quit()
+        return True, None
+    except Exception as exc:
+        return False, str(exc)

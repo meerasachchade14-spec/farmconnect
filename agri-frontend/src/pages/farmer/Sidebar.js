@@ -5,7 +5,7 @@ import "./Sidebar.css";
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h2 className="sidebar-logo">Farmer Panel</h2>
+      <h2 className="sidebar-logo">Farmer</h2>
 
       <ul className="sidebar-menu">
         <li>
@@ -14,10 +14,6 @@ function Sidebar() {
 
         <li>
           <Link to="add-product">Add Product</Link>
-        </li>
-
-        <li>
-          <Link to="my-products">My Products</Link>
         </li>
 
         <li>

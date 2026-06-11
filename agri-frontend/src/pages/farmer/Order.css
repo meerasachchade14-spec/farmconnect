@@ -5,18 +5,18 @@ padding:25px;
 .order-title{
 margin-bottom:20px;
 color:#2e7d32;
+font-size:28px;
+font-weight:700;
 }
 
-/* table container */
+/* TABLE */
 
 .order-table{
 background:white;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.08);
+border-radius:14px;
 overflow:hidden;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
-
-/* table */
 
 table{
 width:100%;
@@ -26,28 +26,29 @@ border-collapse:collapse;
 th{
 background:#2e7d32;
 color:white;
-padding:12px;
+padding:14px;
 text-align:left;
-font-size:14px;
+font-size:15px;
 }
 
 td{
-padding:12px;
+padding:14px;
 border-bottom:1px solid #eee;
 font-size:14px;
 }
 
 tr:hover{
-background:#f9f9f9;
+background:#f9fafb;
 }
 
-/* status badges */
+/* STATUS */
 
 .status{
-padding:5px 10px;
+padding:6px 12px;
 border-radius:20px;
 font-size:12px;
-font-weight:bold;
+font-weight:600;
+display:inline-block;
 }
 
 .status.delivered{
@@ -60,17 +61,57 @@ background:#fff3cd;
 color:#856404;
 }
 
-.status.shipped{
-background:#cce5ff;
-color:#004085;
+.status.cancelled{
+background:#f8d7da;
+color:#c62828;
 }
 
-/* empty order */
+/* BUTTONS */
+
+.action-buttons{
+display:flex;
+gap:10px;
+}
+
+.approve-btn{
+background:#2e7d32;
+color:white;
+border:none;
+padding:7px 14px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+.reject-btn{
+background:#d32f2f;
+color:white;
+border:none;
+padding:7px 14px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+.approve-btn:hover{
+background:#1b5e20;
+}
+
+.reject-btn:hover{
+background:#b71c1c;
+}
+
+/* EMPTY */
 
 .no-orders{
 background:white;
-padding:30px;
+padding:40px;
 text-align:center;
-border-radius:10px;
+border-radius:12px;
 box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.error{
+color:red;
+margin-bottom:15px;
 }

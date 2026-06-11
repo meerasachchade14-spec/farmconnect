@@ -1,47 +1,90 @@
 .orders-container{
-  background:white;
-  padding:25px;
-  border-radius:12px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.08);
+background:white;
+padding:25px;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 .orders-container h2{
-  margin-bottom:20px;
+margin-bottom:20px;
+font-size:28px;
+color:#2e7d32;
 }
 
+/* TABLE */
+
 .orders-table{
-  width:100%;
-  border-collapse:collapse;
+width:100%;
+border-collapse:collapse;
 }
 
 .orders-table th{
-  background:#f5f7fa;
-  padding:12px;
-  text-align:left;
-  font-weight:600;
+background:#2e7d32;
+color:white;
+padding:14px;
+text-align:left;
+font-size:14px;
 }
 
 .orders-table td{
-  padding:12px;
-  border-bottom:1px solid #eee;
+padding:14px;
+border-bottom:1px solid #eee;
+font-size:14px;
 }
 
 .orders-table tr:hover{
-  background:#f9fafc;
+background:#f9fafb;
 }
 
+/* STATUS */
+
 .order-status{
-  font-weight:600;
+font-weight:600;
 }
 
 .status-delivered{
-  color:#2e9e44;
+color:#2e9e44;
 }
 
 .status-pending{
-  color:#f39c12;
+color:#f39c12;
 }
 
 .status-cancel{
-  color:#e74c3c;
+color:#e74c3c;
+}
+
+/* ACTIONS */
+
+.admin-actions{
+display:flex;
+gap:10px;
+}
+
+.approve-btn{
+background:#2e7d32;
+color:white;
+border:none;
+padding:7px 14px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+.reject-btn{
+background:#d32f2f;
+color:white;
+border:none;
+padding:7px 14px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+.approve-btn:hover{
+background:#1b5e20;
+}
+
+.reject-btn:hover{
+background:#b71c1c;
 }

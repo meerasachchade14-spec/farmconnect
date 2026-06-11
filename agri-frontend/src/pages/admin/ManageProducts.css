@@ -5,6 +5,8 @@ border-radius:12px;
 box-shadow:0 2px 10px rgba(0,0,0,0.08);
 }
 
+/* HEADER */
+
 .products-header{
 display:flex;
 justify-content:space-between;
@@ -12,47 +14,91 @@ align-items:center;
 margin-bottom:20px;
 }
 
+.products-header h2{
+color:#1b4332;
+font-size:24px;
+font-weight:700;
+}
+
+/* BUTTON */
+
 .add-product-btn{
 background:#2e9e44;
 color:white;
 border:none;
-padding:8px 15px;
-border-radius:6px;
+padding:10px 18px;
+border-radius:8px;
 cursor:pointer;
+font-weight:600;
+transition:0.3s;
 }
+
+.add-product-btn:hover{
+background:#237a34;
+}
+
+/* TABLE */
 
 .products-table{
 width:100%;
 border-collapse:collapse;
+background:white;
+border-radius:10px;
+overflow:hidden;
 }
+
+/* TABLE HEADINGS */
 
 .products-table th{
-background:#f5f7fa;
-padding:12px;
+background:#e8f5e9;
+padding:14px;
 text-align:left;
+font-size:15px;
+font-weight:700;
+color:#1b4332;   /* DARK GREEN */
+border-bottom:2px solid #cfe8d2;
 }
+
+/* TABLE DATA */
 
 .products-table td{
-padding:12px;
-border-bottom:1px solid #eee;
+padding:14px;
+border-bottom:1px solid #eaeaea;
+font-size:14px;
+color:#222;   /* DARK TEXT */
+font-weight:500;
 }
+
+/* ROW HOVER */
 
 .products-table tr:hover{
-background:#f9fafc;
+background:#f9fff9;
 }
 
+/* IMAGE */
+
 .product-img{
-width:50px;
-height:50px;
+width:55px;
+height:55px;
 object-fit:cover;
-border-radius:6px;
+border-radius:8px;
+border:1px solid #ddd;
 }
+
+/* DELETE BUTTON */
 
 .delete-product{
 background:#e74c3c;
 color:white;
 border:none;
-padding:6px 12px;
-border-radius:6px;
+padding:8px 14px;
+border-radius:7px;
 cursor:pointer;
+font-weight:600;
+transition:0.3s;
+}
+
+.delete-product:hover{
+background:#c0392b;
+transform:scale(1.03);
 }

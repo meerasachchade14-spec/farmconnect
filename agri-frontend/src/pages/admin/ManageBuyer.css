@@ -9,6 +9,11 @@
   margin-bottom:20px;
   color:#2e7d32;
 }
+.status-msg{
+  margin:10px 0 15px 0;
+  color:#2e7d32;
+  font-weight:600;
+}
 
 .buyers-table{
   width:100%;
@@ -44,7 +49,7 @@
   font-weight:600;
 }
 
-.edit-btn, .delete-btn{
+.approve-btn, .reject-btn{
   padding:6px 12px;
   border:none;
   border-radius:6px;
@@ -54,20 +59,20 @@
   transition:0.3s;
 }
 
-.edit-btn{
+.approve-btn{
   background:#2e9e44;
   color:white;
 }
 
-.edit-btn:hover{
+.approve-btn:hover{
   background:#276c34;
 }
 
-.delete-btn{
+.reject-btn{
   background:#e74c3c;
   color:white;
 }
 
-.delete-btn:hover{
+.reject-btn:hover{
   background:#b23127;
 }

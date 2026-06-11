@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./DashboardHome.css";
+import "./OrderAdmin.css";
 
 function DashboardHome() {
 
-const products = [
-  { name: "Wheat", price: 25, image: "/images/wheat.jpg" },
-  { name: "Rice", price: 30, image: "/images/rice.jpg" },
-  { name: "Corn", price: 20, image: "/images/corn.jpg" },
-  { name: "Cotton", price: 60, image: "/images/cotton.jpg" }
-];
+const [counts, setCounts] = useState({
+  farmers: 0,
+  buyers: 0,
+  orders: 0,
+  products: 0
+});
+const [recentOrders, setRecentOrders] = useState([]);
+const [cartItems, setCartItems] = useState([]);
+
+useEffect(() => {
+  axios.get("http://127.0.0.1:8000/api/admin/overview/")
+  .then(res => {
+    setCounts(res.data.counts || counts);
+    setRecentOrders(res.data.recent_orders || []);
+  })
+  .catch(() => {
+    setCounts(counts);
+    setRecentOrders([]);
+  });
+
+  axios.get("http://127.0.0.1:8000/api/admin/cart/")
+  .then(res => setCartItems(res.data || []))
+  .catch(() => setCartItems([]));
+}, []);
 
 return (
 
@@ -20,69 +40,90 @@ return (
 
 <div className="card">
 <h3>Total Farmers</h3>
-<p>120</p>
+<p>{counts.farmers}</p>
 </div>
 
 <div className="card">
 <h3>Total Buyers</h3>
-<p>85</p>
+<p>{counts.buyers}</p>
 </div>
 
 <div className="card">
 <h3>Total Orders</h3>
-<p>230</p>
+<p>{counts.orders}</p>
+</div>
+
+<div className="card">
+<h3>Total Products</h3>
+<p>{counts.products}</p>
 </div>
 
 </div>
 
-{/* PRODUCTS SECTION */}
+{/* RECENT ORDERS */}
 
-<div className="featured-section">
+<div className="orders-container">
+<h2>Recent Orders</h2>
 
-<h3>🌾 Recent Products</h3>
-
-<div className="crop-grid">
-
-{products.map((item,index)=>(
-<div className="crop-card" key={index}>
-
-<img src={item.image} alt={item.name}/>
-
-<h4>{item.name}</h4>
-
-<p>₹ {item.price} /kg</p>
-
+<table className="orders-table">
+<thead>
+  <tr>
+    <th>Order ID</th>
+    <th>Buyer</th>
+    <th>Farmer</th>
+    <th>Product</th>
+    <th>Quantity</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+  {recentOrders.length === 0 ? (
+    <tr>
+      <td colSpan="6">No recent orders</td>
+    </tr>
+  ) : (
+    recentOrders.map((order) => (
+      <tr key={order.id}>
+        <td>{order.id}</td>
+        <td>{order.buyer_email || "-"}</td>
+        <td>{order.farmer_email || "-"}</td>
+        <td>{order.product_name || "-"}</td>
+        <td>{order.quantity || "-"}</td>
+        <td>{order.status || "-"}</td>
+      </tr>
+    ))
+  )}
+</tbody>
+</table>
 </div>
-))}
 
-</div>
+<div className="orders-container">
+<h2>Recent Cart Items</h2>
 
-</div>
-
-{/* MARKET INSIGHT */}
-
-<div className="insight-box">
-
-<h3>📊 Market Insight</h3>
-
-<p>
-Crop demand is increasing in the market.
-Farmers selling wheat, rice and vegetables are getting better prices.
-</p>
-
-</div>
-
-{/* ADMIN TIP */}
-
-<div className="weather-box">
-
-<h3>🛠 Admin Tip</h3>
-
-<p>
-Keep monitoring farmer activities and product listings to ensure
-quality and fair pricing across the platform.
-</p>
-
+<table className="orders-table">
+<thead>
+  <tr>
+    <th>Buyer</th>
+    <th>Product</th>
+    <th>Quantity</th>
+  </tr>
+</thead>
+<tbody>
+  {cartItems.length === 0 ? (
+    <tr>
+      <td colSpan="3">No cart items</td>
+    </tr>
+  ) : (
+    cartItems.map((item) => (
+      <tr key={item.id}>
+        <td>{item.buyer_email || "-"}</td>
+        <td>{item.product_name || "-"}</td>
+        <td>{item.quantity || "-"}</td>
+      </tr>
+    ))
+  )}
+</tbody>
+</table>
 </div>
 
 </div>

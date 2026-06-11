@@ -10,7 +10,7 @@ const email = localStorage.getItem("email");
 
 useEffect(()=>{
 
-axios.get(`http://127.0.0.1:8000/buyer/wishlist/${email}/`)
+axios.get(`http://127.0.0.1:8000/api/buyer/wishlist/${email}/`)
 .then(res=>{
 setItems(res.data);
 });
@@ -19,10 +19,9 @@ setItems(res.data);
 
 const removeItem = async(id)=>{
 
-await axios.delete("http://127.0.0.1:8000/buyer/wishlist/remove/",{
-data:{id}
-});
+await axios.get(`http://127.0.0.1:8000/api/buyer/wishlist/remove/${id}/`);
 
+setItems(items.filter((x)=>x.id !== id));
 alert("Removed");
 
 }

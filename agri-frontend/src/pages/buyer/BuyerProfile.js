@@ -14,6 +14,7 @@ const [loading,setLoading] = useState(true);
 const [message,setMessage] = useState("");
 const [cart,setCart] = useState([]);
 const [wishlist,setWishlist] = useState([]);
+const [showLocationPrompt,setShowLocationPrompt] = useState(false);
 
 const [profile,setProfile] = useState({
  name: "",
@@ -42,16 +43,22 @@ useEffect(()=>{
   setLoading(false);
   return;
  }
+
  axios.get(`http://127.0.0.1:8000/api/users/profile/${email}/`)
  .then(res=>{
   setProfile(res.data);
   setLoading(false);
  })
- .catch(()=>setLoading(false));
+ .catch(()=>{
+  setLoading(false);
+  setMessage("Failed to load profile");
+ });
+
 },[email]);
 
 useEffect(()=>{
  if(!email) return;
+
  axios.get(`http://127.0.0.1:8000/api/buyer/cart/${email}/`)
  .then(res=>setCart(res.data || []))
  .catch(()=>setCart([]));
@@ -59,50 +66,146 @@ useEffect(()=>{
  axios.get(`http://127.0.0.1:8000/api/buyer/wishlist/${email}/`)
  .then(res=>setWishlist(res.data || []))
  .catch(()=>setWishlist([]));
+
 },[email]);
 
+// ================= HANDLE INPUT =================
+
 const handleChange = (e)=>{
- setProfile({...profile,[e.target.name]:e.target.value});
+ setProfile({
+  ...profile,
+  [e.target.name]:e.target.value
+ });
 };
+
+// ================= SAVE PROFILE =================
 
 const saveProfile = async () => {
- try{
-  const payload = {
-    ...profile,
-    buyer_type: buyerType
-  };
-  await axios.put(`http://127.0.0.1:8000/api/users/profile/${email}/update/`, payload);
-  setMessage("Profile updated");
-  setEditMode(false);
- }catch(err){
-  setMessage("Failed to update profile");
- }
+
+  // REQUIRED COMMON FIELDS
+  if (
+    !profile.name.trim() ||
+    !profile.phone.trim() ||
+    !profile.address.trim() ||
+    !profile.dob ||
+    !profile.gender ||
+    !profile.avatar_url.trim()
+  ) {
+    setMessage("Please fill all required fields");
+    return;
+  }
+
+  // COMPANY REQUIRED FOR B2B
+  if (
+    buyerType === "B2B" &&
+    !profile.company.trim()
+  ) {
+    setMessage("Company name is required");
+    return;
+  }
+
+  try{
+
+    const payload = {
+      ...profile,
+      buyer_type: buyerType
+    };
+
+    await axios.put(
+      `http://127.0.0.1:8000/api/users/profile/${email}/update/`,
+      payload
+    );
+
+    setMessage("Profile updated successfully");
+    setEditMode(false);
+
+  }catch(err){
+
+    setMessage("Failed to update profile");
+  }
 };
 
+// ================= LOCATION =================
+
 const detectLocation = () => {
+
+  setShowLocationPrompt(false);
+
   if (!navigator.geolocation) {
     setMessage("Geolocation is not supported");
     return;
   }
+
   navigator.geolocation.getCurrentPosition(
+
     (pos) => {
-      const coords = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
-      const updated = { ...profile, address: coords };
-      setProfile(updated);
-      axios.put(`http://127.0.0.1:8000/api/users/profile/${email}/update/`, {
-        address: coords
-      }).then(() => setMessage("Location updated")).catch(() => setMessage("Failed to update location"));
+
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+
+      fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+      )
+        .then(res => res.json())
+        .then(json => {
+
+          const place =
+            json?.display_name ||
+            `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+          const updated = {
+            ...profile,
+            address: place
+          };
+
+          setProfile(updated);
+
+          return axios.put(
+            `http://127.0.0.1:8000/api/users/profile/${email}/update/`,
+            {
+              address: place
+            }
+          );
+        })
+        .then(() => setMessage("Location updated"))
+        .catch(() => setMessage("Failed to update location"));
     },
+
     () => setMessage("Location permission denied")
   );
 };
 
+// ================= PASSWORD =================
+
 const changePassword = () => {
-  navigate("/forgot-password", { state: { email } });
+
+  navigate("/forgot-password", {
+    state: { email }
+  });
 };
 
+// ================= LOGOUT =================
+
+const logout = () => {
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("email");
+  localStorage.removeItem("role");
+  localStorage.removeItem("buyerType");
+  localStorage.removeItem("name");
+  localStorage.removeItem("phone");
+
+  navigate("/login");
+};
+
+// ================= LOADING =================
+
 if(loading){
- return <div className="profile-page">Loading...</div>;
+ return (
+  <div className="profile-page">
+    Loading...
+  </div>
+ );
 }
 
 return(
@@ -111,13 +214,23 @@ return(
 
 <div className="profile-container">
 
+{!email && (
+<p className="status-msg">
+Please login again to load your profile data.
+</p>
+)}
+
 {/* LEFT PROFILE CARD */}
 
 <div className="profile-left">
 
 <div className="profile-card">
 
-<img src={profile.avatar_url || defaultBuyerImage} alt="buyer" className="profile-img"/>
+<img
+src={profile.avatar_url || defaultBuyerImage}
+alt="buyer"
+className="profile-img"
+/>
 
 <h2>{profile.name || "Buyer"}</h2>
 
@@ -125,8 +238,17 @@ return(
 
 <p>{profile.phone || "-"}</p>
 
-{buyerType === "B2B" && <p><b>Company:</b> {profile.company || "-"}</p>}
-{message && <p className="status-msg">{message}</p>}
+{buyerType === "B2B" && (
+<p>
+<b>Company:</b> {profile.company || "-"}
+</p>
+)}
+
+{message && (
+<p className="status-msg">
+{message}
+</p>
+)}
 
 <button
 className="edit-btn"
@@ -141,15 +263,27 @@ onClick={()=>setEditMode(!editMode)}
 
 <h4>General</h4>
 
-<div className="option" onClick={detectLocation}>📍 Location</div>
+<div
+className="option"
+onClick={() => setShowLocationPrompt(true)}
+>
+📍 Location
+</div>
 
-<div className="option" onClick={changePassword}>🔒 Change Password</div>
+<div
+className="option"
+onClick={changePassword}
+>
+🔒 Change Password
+</div>
 
-<div className="option">🛒 My Orders</div>
 
-<div className="option">💖 Wishlist</div>
-
-{buyerType === "B2B" && <div className="option">📦 Bulk Orders</div>}
+<div
+className="option"
+onClick={logout}
+>
+🚪 Logout
+</div>
 
 </div>
 
@@ -172,7 +306,8 @@ type="text"
 name="name"
 value={profile.name}
 onChange={handleChange}
-placeholder="Full Name"
+placeholder="Full Name *"
+required
 />
 
 <input
@@ -180,27 +315,17 @@ type="text"
 name="phone"
 value={profile.phone}
 onChange={handleChange}
-placeholder="Phone Number"
+placeholder="Phone Number *"
+required
 />
-
-{buyerType === "B2B" && (
-
-<input
-type="text"
-name="company"
-value={profile.company}
-onChange={handleChange}
-placeholder="Company Name"
-/>
-
-)}
 
 <input
 type="text"
 name="address"
 value={profile.address}
 onChange={handleChange}
-placeholder="Address"
+placeholder="Address *"
+required
 />
 
 {buyerType === "B2B" && (
@@ -209,32 +334,55 @@ type="text"
 name="company"
 value={profile.company}
 onChange={handleChange}
-placeholder="Company Name"
+placeholder="Company Name *"
+required
 />
 )}
+
+<input
+type="text"
+name="avatar_url"
+value={profile.avatar_url}
+onChange={handleChange}
+placeholder="Profile Image URL *"
+required
+/>
 
 <input
 type="date"
 name="dob"
 value={profile.dob}
 onChange={handleChange}
+required
 />
 
 <select
 name="gender"
 value={profile.gender}
 onChange={handleChange}
+required
 >
 
-<option value="">Select Gender</option>
+<option value="">
+Select Gender *
+</option>
 
-<option>Male</option>
+<option>
+Male
+</option>
 
-<option>Female</option>
+<option>
+Female
+</option>
 
 </select>
 
-<button className="save-btn" onClick={saveProfile}>Save Profile</button>
+<button
+className="save-btn"
+onClick={saveProfile}
+>
+Save Profile
+</button>
 
 </div>
 
@@ -246,11 +394,19 @@ onChange={handleChange}
 
 <h3>🛒 Buyer Information</h3>
 
-{buyerType === "B2B" && <p><b>Company:</b> {profile.company || "-"}</p>}
+{buyerType === "B2B" && (
+<p>
+<b>Company:</b> {profile.company || "-"}
+</p>
+)}
 
-<p><b>Type:</b> {buyerType}</p>
+<p>
+<b>Type:</b> {buyerType}
+</p>
 
-<p><b>Address:</b> {profile.address || "-"}</p>
+<p>
+<b>Address:</b> {profile.address || "-"}
+</p>
 
 </div>
 
@@ -287,21 +443,83 @@ onChange={handleChange}
 )}
 
 <div className="widget">
+
 <h3>🛒 Cart Items</h3>
-{cart.length === 0 ? <p>No items in cart</p> : (
-  cart.slice(0,5).map((c) => (
-    <p key={c.id}>{c.product_name} (x{c.quantity})</p>
-  ))
+
+{cart.length === 0 ? (
+
+<p>No items in cart</p>
+
+) : (
+
+cart.slice(0,5).map((c) => (
+
+<p key={c.id}>
+{c.product_name} (x{c.quantity})
+</p>
+
+))
 )}
+
 </div>
 
 <div className="widget">
+
 <h3>💖 Wishlist</h3>
-{wishlist.length === 0 ? <p>No wishlist items</p> : (
-  wishlist.slice(0,5).map((w) => (
-    <p key={w.id}>{w.product_name}</p>
-  ))
+
+{wishlist.length === 0 ? (
+
+<p>No wishlist items</p>
+
+) : (
+
+wishlist.slice(0,5).map((w) => (
+
+<p key={w.id}>
+{w.product_name}
+</p>
+
+))
 )}
+
+</div>
+
+</div>
+
+)}
+
+{/* LOCATION MODAL */}
+
+{showLocationPrompt && (
+
+<div className="location-overlay">
+
+<div className="location-modal">
+
+<h3>Enable Location</h3>
+
+<p>
+Allow location access just once for your current session.
+</p>
+
+<div className="location-actions">
+
+<button
+className="approve-btn"
+onClick={detectLocation}
+>
+Enable once
+</button>
+
+<button
+className="reject-btn"
+onClick={() => setShowLocationPrompt(false)}
+>
+Not enable
+</button>
+
+</div>
+
 </div>
 
 </div>

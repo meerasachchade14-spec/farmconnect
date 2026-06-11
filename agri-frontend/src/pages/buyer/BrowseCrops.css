@@ -20,6 +20,13 @@ object-fit:cover;
 border-radius:8px;
 }
 
+.crop-details{
+text-align:left;
+font-size:0.9rem;
+color:#555;
+margin:8px 0 12px 0;
+}
+
 /* ADD TO CART BUTTON */
 
 .cart-btn{
