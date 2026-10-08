@@ -167,9 +167,27 @@ const Landing = () => {
         whileInView={{ opacity: 1 }}
       >
         <h2>Contact Us</h2>
-        <p>📧 farmconnect@gmail.com</p>
+        
+        <div className="contact-buttons">
+          <a href="mailto:meera.ldrp.7@gmail.com" className="contact-btn">
+            <span className="contact-icon">📧</span> meera.ldrp.7@gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/meera-sachchade-208123395/" target="_blank" rel="noreferrer" className="contact-btn">
+            <span className="contact-icon">💼</span> Meet Me
+          </a>
+          <a href="https://www.linkedin.com/in/jhanvi-ramani-a15b123a8/" target="_blank" rel="noreferrer" className="contact-btn">
+            <span className="contact-icon">💼</span> Meet Jhanvi
+          </a>
+          <a href="https://github.com/meerasachchade14-spec" target="_blank" rel="noreferrer" className="contact-btn">
+            <span className="contact-icon">💻</span> Meera's Code
+          </a>
+          <a href="https://github.com/ramanijhanvi88" target="_blank" rel="noreferrer" className="contact-btn">
+            <span className="contact-icon">💻</span> Jhanvi's Code
+          </a>
+        </div>
+
         <p>📞 +91 79840 59194</p>
-        <p>📍 India</p>
+        <p>📍 Gandhinagar, Gujarat, India</p>
       </motion.section>
 
       {/* FOOTER WITH HIDDEN ADMIN LOGIN */}
