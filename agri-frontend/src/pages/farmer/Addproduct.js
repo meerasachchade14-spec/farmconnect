@@ -12,7 +12,7 @@ function AddProduct() {
   const [land, setLand] = useState("");
   const [soil, setSoil] = useState("");
   const [sand, setSand] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +31,7 @@ function AddProduct() {
       !land ||
       !soil ||
       !sand ||
-      !imageUrl
+      !imageFile
     ) {
       alert("Please fill all fields");
       return;
@@ -48,22 +48,22 @@ function AddProduct() {
 
     try {
 
+      const formData = new FormData();
+      formData.append("name", name.trim());
+      formData.append("price", price.trim());
+      formData.append("quantity", quantity.trim());
+      formData.append("farmer_email", farmer_email);
+      formData.append("details", details.trim());
+      formData.append("atmosphere", atmosphere.trim());
+      formData.append("land", land.trim());
+      formData.append("soil", soil.trim());
+      formData.append("sand", sand.trim());
+      formData.append("image", imageFile);
+
       await axios.post(
         "http://127.0.0.1:8000/api/farmer/product/add/",
-        {
-          name: name.trim(),
-          price: price.trim(),
-          quantity: quantity.trim(),
-          farmer_email,
-
-          details: details.trim(),
-          atmosphere: atmosphere.trim(),
-          land: land.trim(),
-          soil: soil.trim(),
-          sand: sand.trim(),
-
-          image_url: imageUrl.trim()
-        }
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       alert("Product Added Successfully");
@@ -78,7 +78,10 @@ function AddProduct() {
       setLand("");
       setSoil("");
       setSand("");
-      setImageUrl("");
+      setImageFile(null);
+      
+      // Reset file input element visually
+      document.getElementById("image-upload-input").value = "";
 
     } catch (err) {
 
@@ -174,10 +177,10 @@ function AddProduct() {
           />
 
           <input
-            type="text"
-            placeholder="Image URL *"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            id="image-upload-input"
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files[0])}
             required
           />
 

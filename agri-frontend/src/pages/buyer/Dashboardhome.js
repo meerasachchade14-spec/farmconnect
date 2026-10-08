@@ -15,11 +15,6 @@ price:30,
 image:"https://images.unsplash.com/photo-1586201375761-83865001e31c"
 },
 {
-name:"Corn",
-price:20,
-image:"https://images.unsplash.com/photo-1601597111158-2fceff292cdc"
-},
-{
 name:"Cotton",
 price:60,
 image:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea"

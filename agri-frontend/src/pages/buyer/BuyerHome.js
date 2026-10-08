@@ -6,7 +6,6 @@ function BuyerHome() {
 const products = [
   { name:"Wheat", price:25, image:"/images/wheat.jpg" },
   { name:"Rice", price:30, image:"/images/rice.jpg" },
-  { name:"Corn", price:20, image:"/images/corn.jpg" },
   { name:"Cotton", price:60, image:"/images/cotton.jpg" }
 ];
 

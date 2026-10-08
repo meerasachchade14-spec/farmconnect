@@ -402,7 +402,9 @@ def add_product(request):
             "error": "POST method required"
         }, status=405)
 
-    data = json.loads(request.body)
+    from django.core.files.storage import FileSystemStorage
+
+    data = request.POST
 
     required_fields = [
         "name",
@@ -412,13 +414,19 @@ def add_product(request):
     ]
 
     for field in required_fields:
-
         value = str(data.get(field, "")).strip()
-
         if value == "":
             return JsonResponse({
                 "error": f"{field} is required"
             }, status=400)
+
+    # Handle image upload
+    image_url = ""
+    if 'image' in request.FILES:
+        image_file = request.FILES['image']
+        fs = FileSystemStorage(location='media/products/')
+        filename = fs.save(image_file.name, image_file)
+        image_url = f"http://127.0.0.1:8000/media/products/{filename}"
 
     products_col.insert_one({
         "name": data.get("name"),
@@ -426,7 +434,7 @@ def add_product(request):
         "quantity": data.get("quantity"),
         "farmer_email": data.get("farmer_email"),
         "description": data.get("description", ""),
-        "image": data.get("image", ""),
+        "image": image_url,
         "created_at": time.strftime("%d %b %Y")
     })
 

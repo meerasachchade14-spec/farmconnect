@@ -30,16 +30,6 @@ const staticCrops = [
     farmer_email: "meerasachchade14@gmail.com"
   },
   {
-    name: "Corn",
-    price: 24,
-    image: "https://images.unsplash.com/photo-1506806732259-39c2d0268443",
-    land: "Fertile plains",
-    atmosphere: "Moderate",
-    soil: "Silty soil",
-    details: "Fresh corn suitable for snacks and feed",
-    farmer_email: "meerasachchade14@gmail.com"
-  },
-  {
     name: "Cotton",
     price: 60,
     image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
