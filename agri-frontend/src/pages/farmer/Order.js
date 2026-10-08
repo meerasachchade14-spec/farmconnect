@@ -49,7 +49,7 @@ function Order() {
 
     try {
 
-      await axios.patch(
+      await axios.post(
         "http://127.0.0.1:8000/api/admin/orders/status/",
         {
           id,
@@ -75,7 +75,7 @@ function Order() {
 
     const s = status.toLowerCase();
 
-    if (s === "approved") return "delivered";
+    if (s === "approved" || s === "accepted") return "delivered";
     if (s === "rejected") return "cancelled";
 
     return "pending";
@@ -213,10 +213,10 @@ function Order() {
                     <button
                       className="approve-btn"
                       onClick={() =>
-                        updateStatus(order.id, "Approved")
+                        updateStatus(order.id, "Accepted")
                       }
                     >
-                      Approve
+                      Accept
                     </button>
 
                     <button
