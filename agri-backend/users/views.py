@@ -19,6 +19,20 @@ cart_col = db["cart"]
 wishlist_col = db["wishlist"]
 payments_col = db["payments"]
 
+# Enforce unique email at the database level
+users_col.create_index("email", unique=True)
+
+# Ensure admin account exists
+ADMIN_EMAIL = "meera.ldrp.7@gmail.com"
+if not users_col.find_one({"email": ADMIN_EMAIL}):
+    users_col.insert_one({
+        "email": ADMIN_EMAIL,
+        "password": "admin",
+        "role": "admin",
+        "name": "Admin",
+        "status": "Approved"
+    })
+
 # ================= OTP =================
 
 OTP_STORE = {}
@@ -83,7 +97,7 @@ def register_user(request):
 
     if existing_user:
         return JsonResponse({
-            "error": "User already exists"
+            "error": "This email is already registered. Please login instead."
         }, status=400)
 
     user_data = {

@@ -50,6 +50,7 @@ const ForgotPassword = () => {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            readOnly={location.state?.isAdmin}
           />
           <button type="submit">Send OTP</button>
         </form>

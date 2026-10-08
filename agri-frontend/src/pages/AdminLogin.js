@@ -83,6 +83,17 @@ const AdminLogin = () => {
           required
         />
 
+        <div style={{ textAlign: "right", marginTop: "-10px", marginBottom: "15px" }}>
+          <span
+            style={{ color: "#2e7d32", cursor: "pointer", fontSize: "0.9rem", textDecoration: "underline" }}
+            onClick={() => {
+              navigate("/forgot-password", { state: { email: "meera.ldrp.7@gmail.com", isAdmin: true } });
+            }}
+          >
+            Forgot Password?
+          </span>
+        </div>
+
         <button type="submit">
           Login
         </button>
