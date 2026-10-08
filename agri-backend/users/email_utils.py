@@ -1,38 +1,28 @@
-import smtplib
-from email.mime.text import MIMEText
+from django.core.mail import send_mail
 from django.conf import settings
 
 
 def send_otp_email(receiver_email, otp):
     subject = "FarmConnect OTP"
-    body = f"Your OTP is {otp}"
+    body = f"""
+Welcome to FarmConnect!
 
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = settings.EMAIL_HOST_USER
-    msg["To"] = receiver_email
+Your One-Time Password (OTP) is:
 
-    host = getattr(settings, "EMAIL_HOST", "smtp.gmail.com")
-    port = getattr(settings, "EMAIL_PORT", 587)
-    use_tls = getattr(settings, "EMAIL_USE_TLS", True)
+{otp}
 
-    try:
-        server = smtplib.SMTP(host, port, timeout=10)
-        if use_tls:
-            server.starttls()
+This OTP is valid for 10 minutes.
 
-        server.login(
-            settings.EMAIL_HOST_USER,
-            settings.EMAIL_HOST_PASSWORD
-        )
+Do not share this OTP with anyone.
 
-        server.sendmail(
-            settings.EMAIL_HOST_USER,
-            receiver_email,
-            msg.as_string()
-        )
+Regards,
+FarmConnect Team
+"""
 
-        server.quit()
-        return True, None
-    except Exception as exc:
-        return False, str(exc)
+    send_mail(
+        subject,
+        body,
+        settings.EMAIL_HOST_USER,
+        [receiver_email],
+        fail_silently=False,
+    )

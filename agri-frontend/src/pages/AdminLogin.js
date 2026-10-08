@@ -22,24 +22,31 @@ const AdminLogin = () => {
       return;
     }
 
-    // ADMIN LOGIN
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-    if (
-      email === "meerasachchade14@gmail.com" &&
-      password === "iloveyou"
-    ) {
+      const data = await res.json();
 
-      localStorage.setItem("email", email);
-      localStorage.setItem("role", "admin");
-      localStorage.setItem("admin", true);
-
-      navigate("/admin-dashboard");
-
-    } 
-    else {
-
-      setError("Invalid Admin Credentials");
-
+      if (res.ok) {
+        if (data.role === "admin") {
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("role", "admin");
+          localStorage.setItem("admin", true);
+          navigate("/admin-dashboard");
+        } else {
+          setError("Access Denied: Not an admin account");
+        }
+      } else {
+        setError(data.error || "Login failed");
+      }
+    } catch (err) {
+      setError("Server error. Please try again later.");
     }
 
   };

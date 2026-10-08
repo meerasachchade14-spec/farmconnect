@@ -69,6 +69,16 @@ def register_user(request):
             "error": "Email, password and role required"
         }, status=400)
 
+    if role == "admin":
+        return JsonResponse({
+            "error": "Admin registration is not allowed"
+        }, status=403)
+
+    if email == "meera.ldrp.7@gmail.com":
+        return JsonResponse({
+            "error": "Admin email cannot be used for normal registration"
+        }, status=403)
+
     existing_user = users_col.find_one({"email": email})
 
     if existing_user:
@@ -107,12 +117,14 @@ def register_user(request):
 
     try:
         send_otp_email(email, otp)
-    except:
-        pass
+    except Exception as e:
+        users_col.delete_one({"email": email})
+        return JsonResponse({
+            "error": "Failed to connect to OTP system / OTP system is closed."
+        }, status=500)
 
     return JsonResponse({
-        "msg": "Registered successfully",
-        "otp": otp
+        "msg": "Registered successfully. Please check your email for the OTP."
     })
 
 
@@ -198,12 +210,13 @@ def forgot_password(request):
 
     try:
         send_otp_email(email, otp)
-    except:
-        pass
+    except Exception as e:
+        return JsonResponse({
+            "error": "Failed to connect to OTP system / OTP system is closed."
+        }, status=500)
 
     return JsonResponse({
-        "msg": "OTP sent",
-        "otp": otp
+        "msg": "OTP sent. Please check your email."
     })
 
 
