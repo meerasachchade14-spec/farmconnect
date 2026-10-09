@@ -125,13 +125,18 @@ urlpatterns = [
     ),
 
     path(
-        "admin/users/<str:role>/",
-        views.admin_users
+        "admin/users/status/",
+        views.admin_update_user_status
     ),
 
     path(
-        "admin/users/status/",
-        views.admin_update_user_status
+        "admin/users/delete/",
+        views.admin_delete_user
+    ),
+
+    path(
+        "admin/users/<str:role>/",
+        views.admin_users
     ),
 
     path(
@@ -148,6 +153,13 @@ urlpatterns = [
         "admin/cart/",
         views.admin_cart
     ),
+
+    path(
+        "admin/wishlist/",
+        views.admin_wishlist
+    ),
+
+
 
     # ================= PROFILE =================
 

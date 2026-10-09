@@ -1,8 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./AdminSidebar.css";
 
 function AdminSidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/admin-login");
+  };
+
   return (
     <div className="admin-sidebar">
 
@@ -27,6 +34,15 @@ function AdminSidebar() {
         </li>
 
       </ul>
+
+      <div style={{ marginTop: "auto", padding: "20px" }}>
+        <button 
+          onClick={handleLogout} 
+          style={{ width: "100%", padding: "10px", backgroundColor: "#e74c3c", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
+        >
+          Logout
+        </button>
+      </div>
 
     </div>
   );

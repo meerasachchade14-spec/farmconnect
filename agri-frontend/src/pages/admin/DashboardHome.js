@@ -6,13 +6,14 @@ import "./OrderAdmin.css";
 function DashboardHome() {
 
 const [counts, setCounts] = useState({
-  farmers: 0,
-  buyers: 0,
-  orders: 0,
-  products: 0
+  Farmers: 0,
+  Buyers: 0,
+  Orders: 0,
+  Products: 0
 });
 const [recentOrders, setRecentOrders] = useState([]);
 const [cartItems, setCartItems] = useState([]);
+const [wishlistItems, setWishlistItems] = useState([]);
 
 useEffect(() => {
   axios.get("http://127.0.0.1:8000/api/admin/overview/")
@@ -28,6 +29,10 @@ useEffect(() => {
   axios.get("http://127.0.0.1:8000/api/admin/cart/")
   .then(res => setCartItems(res.data || []))
   .catch(() => setCartItems([]));
+
+  axios.get("http://127.0.0.1:8000/api/admin/wishlist/")
+  .then(res => setWishlistItems(res.data || []))
+  .catch(() => setWishlistItems([]));
 }, []);
 
 return (
@@ -40,22 +45,22 @@ return (
 
 <div className="card">
 <h3>Total Farmers</h3>
-<p>{counts.farmers}</p>
+<p>{counts.Farmers}</p>
 </div>
 
 <div className="card">
 <h3>Total Buyers</h3>
-<p>{counts.buyers}</p>
+<p>{counts.Buyers}</p>
 </div>
 
 <div className="card">
 <h3>Total Orders</h3>
-<p>{counts.orders}</p>
+<p>{counts.Orders}</p>
 </div>
 
 <div className="card">
 <h3>Total Products</h3>
-<p>{counts.products}</p>
+<p>{counts.Products}</p>
 </div>
 
 </div>
@@ -119,6 +124,33 @@ return (
         <td>{item.buyer_email || "-"}</td>
         <td>{item.product_name || "-"}</td>
         <td>{item.quantity || "-"}</td>
+      </tr>
+    ))
+  )}
+</tbody>
+</table>
+</div>
+
+<div className="orders-container">
+<h2>My Wishlist Items</h2>
+
+<table className="orders-table">
+<thead>
+  <tr>
+    <th>Buyer</th>
+    <th>Product</th>
+  </tr>
+</thead>
+<tbody>
+  {wishlistItems.length === 0 ? (
+    <tr>
+      <td colSpan="2">No wishlist items</td>
+    </tr>
+  ) : (
+    wishlistItems.map((item) => (
+      <tr key={item.id}>
+        <td>{item.buyer_email || "-"}</td>
+        <td>{item.product_name || "-"}</td>
       </tr>
     ))
   )}

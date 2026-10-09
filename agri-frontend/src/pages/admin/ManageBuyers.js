@@ -17,13 +17,7 @@ function ManageBuyers() {
         "http://127.0.0.1:8000/api/admin/users/buyer/"
       );
 
-      const pendingBuyers = res.data.filter(
-        (b) =>
-          (b.status || "").toLowerCase() !== "approved" &&
-          (b.status || "").toLowerCase() !== "rejected"
-      );
-
-      setBuyers(pendingBuyers);
+      setBuyers(res.data);
 
     } catch (err) {
 
@@ -88,6 +82,27 @@ function ManageBuyers() {
     }
   };
 
+  // DELETE USER
+
+  const deleteUser = async (email) => {
+    if (!window.confirm("Are you sure you want to delete this buyer? This will also remove their related orders, cart, and wishlist items.")) {
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://127.0.0.1:8000/api/admin/users/delete/", { email });
+      if (res.data.msg) {
+        setBuyers((prev) => prev.filter((b) => b.email !== email));
+        setMessage("Buyer deleted successfully");
+      } else {
+        setMessage("Failed to delete buyer");
+      }
+    } catch (err) {
+      console.log(err.response);
+      setMessage(err?.response?.data?.error || "Failed to delete buyer");
+    }
+  };
+
   return (
 
     <div className="buyers-container">
@@ -121,7 +136,7 @@ function ManageBuyers() {
 
             <tr>
               <td colSpan="6">
-                No pending buyers
+                No buyers found
               </td>
             </tr>
 
@@ -171,29 +186,12 @@ function ManageBuyers() {
                 </td>
 
                 <td>
-
-                  <button
-                    className="approve-btn"
-                    onClick={() =>
-                      updateStatus(
-                        buyer.email,
-                        "Approved"
-                      )
-                    }
-                  >
-                    Accept
-                  </button>
-
                   <button
                     className="reject-btn"
-                    onClick={() =>
-                      updateStatus(
-                        buyer.email,
-                        "Rejected"
-                      )
-                    }
+                    style={{ backgroundColor: "#e74c3c", marginLeft: "5px" }}
+                    onClick={() => deleteUser(buyer.email)}
                   >
-                    Ignore
+                    Delete
                   </button>
 
                 </td>

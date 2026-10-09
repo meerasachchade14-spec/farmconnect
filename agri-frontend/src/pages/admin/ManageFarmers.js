@@ -17,13 +17,7 @@ function ManageFarmers() {
         "http://127.0.0.1:8000/api/admin/users/farmer/"
       );
 
-      const pendingFarmers = res.data.filter(
-        (f) =>
-          (f.status || "").toLowerCase() !== "approved" &&
-          (f.status || "").toLowerCase() !== "rejected"
-      );
-
-      setFarmers(pendingFarmers);
+      setFarmers(res.data);
 
     } catch (err) {
 
@@ -88,6 +82,27 @@ function ManageFarmers() {
     }
   };
 
+  // DELETE USER
+
+  const deleteUser = async (email) => {
+    if (!window.confirm("Are you sure you want to delete this farmer? This will also remove their related products, orders, and cart.")) {
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://127.0.0.1:8000/api/admin/users/delete/", { email });
+      if (res.data.msg) {
+        setFarmers((prev) => prev.filter((f) => f.email !== email));
+        setMessage("Farmer deleted successfully");
+      } else {
+        setMessage("Failed to delete farmer");
+      }
+    } catch (err) {
+      console.log(err.response);
+      setMessage(err?.response?.data?.error || "Failed to delete farmer");
+    }
+  };
+
   return (
 
     <div className="farmers-container">
@@ -121,7 +136,7 @@ function ManageFarmers() {
 
             <tr>
               <td colSpan="6">
-                No pending farmers
+                No farmers found
               </td>
             </tr>
 
@@ -171,29 +186,12 @@ function ManageFarmers() {
                 </td>
 
                 <td>
-
-                  <button
-                    className="approve-btn"
-                    onClick={() =>
-                      updateStatus(
-                        farmer.email,
-                        "Approved"
-                      )
-                    }
-                  >
-                    Accept
-                  </button>
-
                   <button
                     className="reject-btn"
-                    onClick={() =>
-                      updateStatus(
-                        farmer.email,
-                        "Rejected"
-                      )
-                    }
+                    style={{ backgroundColor: "#e74c3c", marginLeft: "5px" }}
+                    onClick={() => deleteUser(farmer.email)}
                   >
-                    Ignore
+                    Delete
                   </button>
 
                 </td>

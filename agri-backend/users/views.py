@@ -602,6 +602,14 @@ def admin_overview(request):
     total_products = products_col.count_documents({})
     total_orders = orders_col.count_documents({})
 
+    # Fetch recent orders (top 5)
+    recent_docs = list(orders_col.find().sort("_id", -1).limit(5))
+    recent_orders = []
+    for d in recent_docs:
+        d["id"] = str(d["_id"])
+        d.pop("_id", None)
+        recent_orders.append(d)
+
     return JsonResponse({
 
         "farmers": {
@@ -615,7 +623,16 @@ def admin_overview(request):
             "buyers": total_buyers,
             "products": total_products,
             "orders": total_orders
-        }
+        },
+
+        "counts": {
+            "Farmers": total_farmers,
+            "Buyers": total_buyers,
+            "Products": total_products,
+            "Orders": total_orders
+        },
+
+        "recent_orders": recent_orders
     })
 
 
@@ -755,6 +772,63 @@ def admin_cart(request):
         result.append(d)
 
     return JsonResponse(result, safe=False)
+
+def admin_wishlist(request):
+
+    docs = list(wishlist_col.find())
+
+    result = []
+
+    for d in docs:
+
+        d["id"] = str(d["_id"])
+        d.pop("_id", None)
+
+        result.append(d)
+
+    return JsonResponse(result, safe=False)
+
+@csrf_exempt
+def admin_delete_user(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST method required"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        email = data.get("email", "").strip().lower()
+
+        if not email:
+            return JsonResponse({"error": "Email is required"}, status=400)
+
+        user = users_col.find_one({"email": email})
+        if not user:
+            return JsonResponse({"error": "User not found"}, status=404)
+            
+        role = user.get("role")
+
+        # Delete user
+        users_col.delete_one({"email": email})
+
+        # Safely handle related data
+        if role == "farmer":
+            farmer_products = list(products_col.find({"farmer_email": email}))
+            product_names = [p.get("name") for p in farmer_products if p.get("name")]
+            if product_names:
+                wishlist_col.delete_many({"product_name": {"$in": product_names}})
+
+            products_col.delete_many({"farmer_email": email})
+            cart_col.delete_many({"farmer_email": email})
+            orders_col.delete_many({"farmer_email": email})
+        
+        if role == "buyer":
+            cart_col.delete_many({"buyer_email": email})
+            wishlist_col.delete_many({"buyer_email": email})
+            orders_col.delete_many({"buyer_email": email})
+
+        return JsonResponse({"msg": "User deleted successfully"})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
 
 
 # ================= PROFILE =================
